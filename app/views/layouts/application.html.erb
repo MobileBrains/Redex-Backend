@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Redex</title>
+    <%= csrf_meta_tags %>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+     <div id="main-container" class="container-fluid">
+      <div class="row">
+
+        <div class="col-xs-3">
+          <h1> Redex </h1>
+          <hr>
+          <div class="row">
+            <div class="col-xs-12">
+                <% unless flash.empty? %>
+                     <script type="text/javascript">
+                          <% flash.each do |f| %>
+                        <% type = f[0].to_s.gsub('alert', 'error').gsub('notice', 'info') %>
+                         toastr['<%= type %>']('<%= f[1] %>');
+                     <% end %>
+                     </script>
+                <% end %>
+                <p>Aqui un texto XYZ</p>
+                <a data-method="delete" href="/users/sign_out" rel="nofollow"><span class=" btn btn-primary label label-important">Log out</span></a>
+                <hr>
+                <p class="notice"><%= notice %></p>
+                <p class="alert"><%= alert %></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-9">
+          <%= yield %>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
