@@ -30,12 +30,29 @@ gem 'jbuilder', '~> 2.5'
 gem 'bootstrap-sass', '~> 3.2.0'
 gem 'autoprefixer-rails'
 
+#Manage the application.yml file
 gem 'figaro',        group: :development
 
+#User Authentication
 gem 'devise'
+
+#User permisions
+gem 'cancancan'
+
+#User Roles
+gem 'rolify'
+
+#Pretty Alert Messages
 gem 'toastr-rails'
 
+#Web Dashboard Administration
 gem 'rails_admin', '~> 1.0'
+
+
+#----------------------------
+
+#Models Documentation
+gem 'annotate',             group: :development, github: 'ctran/annotate_models'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
