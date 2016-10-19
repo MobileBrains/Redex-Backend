@@ -27,8 +27,7 @@ development:
   <<: *default
   username: <%= ENV['DATABASE_USER'] %>
   password: <%= ENV['DATABASE_PASSWORD'] %>
-  database: Redex_development
-
+  database: redex_development
 
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.
@@ -64,7 +63,7 @@ test:
   <<: *default
   username: <%= ENV['DATABASE_USER'] %>
   password: <%= ENV['DATABASE_PASSWORD'] %>
-  database: Redex_test
+  database: redex_test
 
 # As with config/secrets.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
@@ -87,6 +86,6 @@ test:
 #
 production:
   <<: *default
-  database: Redex_production
+  database: redex_production
   username: Redex
   password: <%= ENV['REDEX_DATABASE_PASSWORD'] %>
