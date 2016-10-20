@@ -60,6 +60,13 @@ gem 'rails_admin', '~> 1.0'
 #Models, Routes and Specs Documentation
 gem 'annotate'
 
+# API
+group :api do
+  gem 'grape'
+  gem 'grape-entity'
+  gem 'rack-cors', :require => 'rack/cors'
+end
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
