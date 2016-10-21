@@ -3,6 +3,8 @@ Rails.application.routes.draw do
   root to: "home#hello"
   get 'home/hello'
 
+  mount API::Base, at: "/api"
   mount RailsAdmin::Engine => '/dashboard', as: 'rails_admin'
+
   devise_for :users
 end
