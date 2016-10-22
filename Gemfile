@@ -60,9 +60,6 @@ gem 'rails_admin', '~> 1.0'
 #Models, Routes and Specs Documentation
 gem 'annotate'
 
-#CSV or Excel file import
-gem 'roo', '~> 2.5.0'
-
 # API
 group :api do
   gem 'grape'
