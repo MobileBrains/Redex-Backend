@@ -15,20 +15,6 @@ ActiveRecord::Schema.define(version: 20161022015740) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "entregas", force: :cascade do |t|
-    t.date     "fecha"
-    t.integer  "nroCarga"
-    t.string   "mensajero"
-    t.string   "ciudad"
-    t.string   "guiaInterna"
-    t.string   "destinatario"
-    t.string   "direccion"
-    t.string   "cliente"
-    t.string   "guiaExterna"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
-  end
-
   create_table "roles", force: :cascade do |t|
     t.string   "name"
     t.string   "resource_type"
