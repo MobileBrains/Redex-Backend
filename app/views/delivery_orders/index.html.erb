@@ -1,0 +1,7 @@
+<h3>Importar Archivo CSV</h3>
+<div>
+  <%= form_tag import_delivery_orders_path, multipart: true do %>
+    <%= file_field_tag :file %>
+    <%= submit_tag "Importar CSV" %>
+  <% end %>
+</div>
