@@ -35,7 +35,8 @@ class DeliveryOrder < ApplicationRecord
         :client,
         :externa_guide
       ]
-      CSV.foreach(file.path, {col_sep: ';', encoding: Encoding::ISO_8859_1}) do |row|
+
+      CSV.foreach(file.path, {:headers => true, skip_lines: /;;;/, col_sep: ';', encoding: Encoding::ISO_8859_1}) do |row|
         delivery_order = DeliveryOrder.where(internal_guide: row[4])
         delivery_order_params = [csv_header,row[0..(row.size-2)]].transpose
         delivery_order_hash = Hash[*delivery_order_params.flatten(1)]

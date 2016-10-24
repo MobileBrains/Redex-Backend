@@ -1,7 +1,27 @@
 <h3>Importar Archivo CSV</h3>
 <div>
   <%= form_tag import_delivery_orders_path, multipart: true do %>
-    <%= file_field_tag :file %>
+    <%= file_field_tag :file,  {:accept => '.csv', :onchange => "checkfile(this)"} %>
     <%= submit_tag "Importar CSV" %>
   <% end %>
 </div>
+
+<script type="text/javascript" language="javascript">
+  function checkfile(sender) {
+    //var validExts = new Array(".xlsx", ".xls", ".csv");
+    var validExts = new Array(".csv");
+    var fileExt = sender.value;
+    fileExt = fileExt.substring(fileExt.lastIndexOf('.'));
+    if (validExts.indexOf(fileExt) < 0) {
+
+      alert("Archivo incorrecto, solo archivos .csv")
+      toastr['error']("Solo se permiten archivos con extención " +
+            validExts.toString() + "." + "\n Por favor seleccione un archivo valido.");
+      $("#file").val("");
+      return false;
+    }
+    else return true;
+  }
+</script>
+
+
