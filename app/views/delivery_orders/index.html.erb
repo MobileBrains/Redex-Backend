@@ -13,8 +13,6 @@
     var fileExt = sender.value;
     fileExt = fileExt.substring(fileExt.lastIndexOf('.'));
     if (validExts.indexOf(fileExt) < 0) {
-
-      alert("Archivo incorrecto, solo archivos .csv")
       toastr['error']("Solo se permiten archivos con extención " +
             validExts.toString() + "." + "\n Por favor seleccione un archivo valido.");
       $("#file").val("");
