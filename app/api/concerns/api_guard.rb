@@ -63,7 +63,7 @@ module APIGuard
 
         when AccessTokenValidation::VALID
           resource_owner_id = access_token.resource_owner_id
-          @current_user = User.find(resource_owner_id)
+          @current_user = User.find(resource_owner_id) if resource_owner_id
         end
       end
     end
