@@ -232,9 +232,7 @@ form.login a:hover
                   <%= f.submit "Update" %>
                 </div>
                 <hr style="width: 100%; border-top: 1px solid #ad3f3f;">
-                <p>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete %></p>
-
-
+                  <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete %>
               <% end %>
             </div>
         </div>
