@@ -21,18 +21,6 @@
     <%= f.password_field :password_confirmation, autocomplete: "off" %>
   </div>
 
-      <%= form_for @user, :html => {:role => 'form' } , :url => user_path do |f| %>
-    <div class="form-group">
-              <%= f.label :role, "Roles" %>
-              <% for role in @roles %>
-                <div>
-                  <%= check_box_tag "user[role_ids][]", role.id, @user.roles.include?(role) %>
-                  <%= role.name.capitalize %>
-                </div>
-              <% end %>
-              </div>
-    <% end %>
-
   <div class="actions">
     <%= f.submit "Sign up" %>
   </div>
