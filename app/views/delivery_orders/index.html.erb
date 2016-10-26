@@ -1,25 +1,18 @@
-<h3>Importar Archivo CSV</h3>
-<div>
-  <%= form_tag import_delivery_orders_path, multipart: true do %>
-    <%= file_field_tag :file,  {:accept => '.csv', :onchange => "checkfile(this)"} %>
-    <%= submit_tag "Importar CSV" %>
-  <% end %>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="text-center">
+                <h1 class="title">Importar Archivo CSV</h1>
+                <hr style="width: 100%; border-top: 1px solid #ad3f3f;">
+            </div>
+            <div class="wrap">
+              <%= form_tag import_delivery_orders_path,class: "devise_form", multipart: true do %>
+                <%= file_field_tag :file,  {:accept => '.csv', :onchange => "checkfile(this)"} %>
+                <%= submit_tag "Importar CSV" %>
+              <% end %>
+            </div>
+        </div>
+    </div>
 </div>
-
-<script type="text/javascript" language="javascript">
-  function checkfile(sender) {
-    //var validExts = new Array(".xlsx", ".xls", ".csv");
-    var validExts = new Array(".csv");
-    var fileExt = sender.value;
-    fileExt = fileExt.substring(fileExt.lastIndexOf('.'));
-    if (validExts.indexOf(fileExt) < 0) {
-      toastr['error']("Solo se permiten archivos con extención " +
-            validExts.toString() + "." + "\n Por favor seleccione un archivo valido.");
-      $("#file").val("");
-      return false;
-    }
-    else return true;
-  }
-</script>
 
 
