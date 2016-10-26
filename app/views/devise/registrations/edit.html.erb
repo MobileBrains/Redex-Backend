@@ -1,7 +1,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-        <%= link_to "Back",:back ,class: "a_red"%>
+        <%= link_to "Atras",:back ,class: "a_red"%>
           <div class="text-center">
             <h1 class="title">Editar Usuario</h1>
             <hr style="width: 100%; border-top: 1px solid #ad3f3f;">
@@ -23,29 +23,29 @@
                 <% end %>
 
                 <div class="field">
-                  <%= f.label :password %> <i style="color: white">(leave blank if you don't want to change it)</i><br />
+                  <%= f.label :password, "Contraseña" %> <i style="color: white">(Si no deseas cambiarla, Deja el campo en blanco.)</i><br />
                   <%= f.password_field :password, autocomplete: "off" %>
                   <% if @minimum_password_length %>
                     <br />
-                    <em><%= @minimum_password_length %> characters minimum</em>
+                    <em><%= @minimum_password_length %> caracteres minimo.</em>
                   <% end %>
                 </div>
 
                 <div class="field">
-                  <%= f.label :password_confirmation %><br />
+                  <%= f.label :password_confirmation, "Confirmar contraseña" %><br />
                   <%= f.password_field :password_confirmation, autocomplete: "off" %>
                 </div>
 
                 <div class="field">
-                  <%= f.label :current_password %> <i style="color: white">(we need your current password to confirm your changes)</i><br />
+                  <%= f.label :current_password, "Contraseña actual" %> <i style="color: white">(Necesitamos tu contraseña actual para confirmar los cambios.)</i><br />
                   <%= f.password_field :current_password, autocomplete: "off" %>
                 </div>
 
                 <div class="actions">
-                  <%= f.submit "Update" %>
+                  <%= f.submit "Actualizar" %>
                 </div>
                 <hr style="width: 100%; border-top: 1px solid #ad3f3f;">
-                  <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete %>
+                  <%= button_to "Cancelar mi cuenta", registration_path(resource_name), data: { confirm: "¿Está seguro?" }, method: :delete %>
               <% end %>
             </div>
         </div>
