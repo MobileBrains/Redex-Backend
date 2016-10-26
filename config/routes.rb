@@ -1,27 +1,44 @@
 # == Route Map
 #
-#                   Prefix Verb   URI Pattern                       Controller#Action
-#   import_delivery_orders POST   /delivery_orders/import(.:format) delivery_orders#import
-#          delivery_orders GET    /delivery_orders(.:format)        delivery_orders#index
-#                     root GET    /                                 home#hello
-#               home_hello GET    /home/hello(.:format)             home#hello
-#                 api_base        /api                              API::Base
-#              rails_admin        /dashboard                        RailsAdmin::Engine
-#         new_user_session GET    /users/sign_in(.:format)          devise/sessions#new
-#             user_session POST   /users/sign_in(.:format)          devise/sessions#create
-#     destroy_user_session DELETE /users/sign_out(.:format)         devise/sessions#destroy
-#            user_password POST   /users/password(.:format)         devise/passwords#create
-#        new_user_password GET    /users/password/new(.:format)     devise/passwords#new
-#       edit_user_password GET    /users/password/edit(.:format)    devise/passwords#edit
-#                          PATCH  /users/password(.:format)         devise/passwords#update
-#                          PUT    /users/password(.:format)         devise/passwords#update
-# cancel_user_registration GET    /users/cancel(.:format)           devise/registrations#cancel
-#        user_registration POST   /users(.:format)                  devise/registrations#create
-#    new_user_registration GET    /users/sign_up(.:format)          devise/registrations#new
-#   edit_user_registration GET    /users/edit(.:format)             devise/registrations#edit
-#                          PATCH  /users(.:format)                  devise/registrations#update
-#                          PUT    /users(.:format)                  devise/registrations#update
-#                          DELETE /users(.:format)                  devise/registrations#destroy
+#                        Prefix Verb   URI Pattern                                  Controller#Action
+#                               GET    /oauth/authorize/:code(.:format)             doorkeeper/authorizations#show
+#           oauth_authorization GET    /oauth/authorize(.:format)                   doorkeeper/authorizations#new
+#                               POST   /oauth/authorize(.:format)                   doorkeeper/authorizations#create
+#                               DELETE /oauth/authorize(.:format)                   doorkeeper/authorizations#destroy
+#                   oauth_token POST   /oauth/token(.:format)                       doorkeeper/tokens#create
+#                  oauth_revoke POST   /oauth/revoke(.:format)                      doorkeeper/tokens#revoke
+#            oauth_applications GET    /oauth/applications(.:format)                doorkeeper/applications#index
+#                               POST   /oauth/applications(.:format)                doorkeeper/applications#create
+#         new_oauth_application GET    /oauth/applications/new(.:format)            doorkeeper/applications#new
+#        edit_oauth_application GET    /oauth/applications/:id/edit(.:format)       doorkeeper/applications#edit
+#             oauth_application GET    /oauth/applications/:id(.:format)            doorkeeper/applications#show
+#                               PATCH  /oauth/applications/:id(.:format)            doorkeeper/applications#update
+#                               PUT    /oauth/applications/:id(.:format)            doorkeeper/applications#update
+#                               DELETE /oauth/applications/:id(.:format)            doorkeeper/applications#destroy
+# oauth_authorized_applications GET    /oauth/authorized_applications(.:format)     doorkeeper/authorized_applications#index
+#  oauth_authorized_application DELETE /oauth/authorized_applications/:id(.:format) doorkeeper/authorized_applications#destroy
+#              oauth_token_info GET    /oauth/token/info(.:format)                  doorkeeper/token_info#show
+#              new_user_session GET    /users/sign_in(.:format)                     devise/sessions#new
+#                  user_session POST   /users/sign_in(.:format)                     devise/sessions#create
+#          destroy_user_session DELETE /users/sign_out(.:format)                    devise/sessions#destroy
+#                 user_password POST   /users/password(.:format)                    devise/passwords#create
+#             new_user_password GET    /users/password/new(.:format)                devise/passwords#new
+#            edit_user_password GET    /users/password/edit(.:format)               devise/passwords#edit
+#                               PATCH  /users/password(.:format)                    devise/passwords#update
+#                               PUT    /users/password(.:format)                    devise/passwords#update
+#      cancel_user_registration GET    /users/cancel(.:format)                      devise/registrations#cancel
+#             user_registration POST   /users(.:format)                             devise/registrations#create
+#         new_user_registration GET    /users/sign_up(.:format)                     devise/registrations#new
+#        edit_user_registration GET    /users/edit(.:format)                        devise/registrations#edit
+#                               PATCH  /users(.:format)                             devise/registrations#update
+#                               PUT    /users(.:format)                             devise/registrations#update
+#                               DELETE /users(.:format)                             devise/registrations#destroy
+#                      api_base        /api                                         API::Base
+#                   rails_admin        /dashboard                                   RailsAdmin::Engine
+#        import_delivery_orders POST   /delivery_orders/import(.:format)            delivery_orders#import
+#               delivery_orders GET    /delivery_orders(.:format)                   delivery_orders#index
+#                          root GET    /                                            home#hello
+#                    home_hello GET    /home/hello(.:format)                        home#hello
 #
 # Routes for RailsAdmin::Engine:
 #   dashboard GET         /                                      rails_admin/main#dashboard
@@ -39,6 +56,12 @@
 # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 Rails.application.routes.draw do
 
+  use_doorkeeper
+  devise_for :users
+
+  mount API::Base, at: "/api"
+  mount RailsAdmin::Engine => '/dashboard', as: 'rails_admin'
+
   resources :delivery_orders, only: [:index, :import] do
     collection { post :import }
   end
@@ -46,8 +69,4 @@ Rails.application.routes.draw do
   root to: "home#hello"
   get 'home/hello'
 
-  mount API::Base, at: "/api"
-  mount RailsAdmin::Engine => '/dashboard', as: 'rails_admin'
-
-  devise_for :users
 end
