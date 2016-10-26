@@ -1,7 +1,10 @@
 module API
   module V1
     class Users < Grape::API
-      include Defaults
+      include APIDefaults
+      include APIGuard
+
+      guard_all!
 
       resource :users do
         desc "Return all users"
