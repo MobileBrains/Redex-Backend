@@ -1,5 +1,6 @@
 class DeliveryOrdersController < ApplicationController
   def index
+    @delivery_orders = DeliveryOrder.all
   end
 
   def import
@@ -11,4 +12,6 @@ class DeliveryOrdersController < ApplicationController
       redirect_to delivery_orders_path, notice: "Archivo CSV con formato invalido."
     end
   end
+
+
 end
