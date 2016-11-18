@@ -16,6 +16,14 @@ html,body{
   text-decoration: none;
 }
 
+.table > tbody{
+  background-color: white;
+}
+
+.table > thead > tr> th{
+  background-color: #e6e6e6 !important;
+}
+
 .a_footer_red{
   color: red;
   text-decoration: none;
