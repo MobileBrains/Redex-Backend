@@ -8,7 +8,12 @@
         </div>
     </div>
     <div class="row">
-
+        <%= form_tag import_delivery_orders_path,class: "devise_form", multipart: true do %>
+          <%= file_field_tag :file,  {:accept => '.csv', :onchange => "checkfile(this)", :class => 'textFile'} %>
+          <%= submit_tag "Importar CSV" %>
+        <% end %>
+    </div>
+    <div class="row">
         <div class="container-fluid">
           <div class="table-responsive">
             <table class="table table-striped table-inverse">
@@ -47,13 +52,6 @@
             </table>
           </div>
         </div>
-
-    </div>
-    <div class="row">
-        <%= form_tag import_delivery_orders_path,class: "devise_form", multipart: true do %>
-          <%= file_field_tag :file,  {:accept => '.csv', :onchange => "checkfile(this)"} %>
-          <%= submit_tag "Importar CSV" %>
-        <% end %>
     </div>
 </div>
 
