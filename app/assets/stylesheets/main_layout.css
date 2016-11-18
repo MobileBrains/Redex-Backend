@@ -34,6 +34,9 @@ html,body{
   text-decoration: none;
 }
 
+.textFile {
+  color: white;
+}
 /* Wrapper for page content to push down footer */
 #wrap {
   min-height: 100%;
