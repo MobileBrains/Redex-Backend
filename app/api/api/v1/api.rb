@@ -5,7 +5,7 @@ module API
     class API < Grape::API
       mount API::Users
       mount API::Sessions
-      mount API::Orders
+      mount API::DeliveryOrders
     end
   end
 end
