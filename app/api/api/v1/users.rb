@@ -24,7 +24,7 @@ module API
 
         desc "Get all delivery orders for the authenticated user"
         post "/orders" do
-          delivery_orders = DeliveryOrder.where(:delivery_man => current_user.name)
+          delivery_orders = DeliveryOrder.where(:delivery_man => current_user.name).order('state desc')
           present :delivery_orders, delivery_orders, with: DeliveryOrderEntity
         end
       end
