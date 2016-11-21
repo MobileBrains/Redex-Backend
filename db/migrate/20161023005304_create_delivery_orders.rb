@@ -11,7 +11,7 @@ class CreateDeliveryOrders < ActiveRecord::Migration[5.0]
       t.string :adderss
       t.string :client
       t.string :externa_guide
-      t.integer :state
+      t.integer :state, default: 0
       t.string :image
 
       t.timestamps

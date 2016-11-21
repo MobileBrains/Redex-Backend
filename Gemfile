@@ -54,6 +54,12 @@ gem 'rolify'
 #Pretty Alert Messages
 gem 'toastr-rails'
 
+# CSV, xls, xlsx, etc files Importer
+gem 'active_importer'
+
+# Font awasome Icons
+gem "font-awesome-rails"
+
 #Web Dashboard Administration
 gem 'rails_admin', '~> 1.0'
 

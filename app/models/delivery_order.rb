@@ -22,6 +22,9 @@
 class DeliveryOrder < ApplicationRecord
   require 'csv'
 
+  enum state: { pendiente: 0, entregada: 1 }
+
+
   def self.import(file)
     begin
       csv_header = [
