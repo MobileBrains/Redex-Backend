@@ -14,7 +14,7 @@ module API
         end
         post "/image" do
           delevery_order = DeliveryOrder.find(permitted_params[:delivery_order_id])
-          delevery_order.update_attribute(:image, permitted_params[:image_url]) if delevery_order.present?
+          delevery_order.update_attributes(:image => permitted_params[:image_url], :state => 1, :delivered_at => Time.now) if delevery_order.present?
           present :delevery_order, delevery_order, with: DeliveryOrderEntity
         end
       end
