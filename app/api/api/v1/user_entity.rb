@@ -5,6 +5,7 @@ module API
     class UserEntity < Grape::Entity
       expose :id
       expose :email
+      expose :name
       expose :created_at
     end
   end
