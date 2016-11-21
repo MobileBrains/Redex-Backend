@@ -62,8 +62,9 @@ Rails.application.routes.draw do
   mount API::Base, at: "/api"
   mount RailsAdmin::Engine => '/dashboard', as: 'rails_admin'
 
-  resources :delivery_orders, only: [:index, :import] do
-    collection { post :import }
+  resources :delivery_orders, only: [:index, :import, :excelImport] do
+    collection { post :import}
+    collection { post :excelImport}
   end
 
   root to: "home#hello"

@@ -61,6 +61,12 @@ html,body{
   width: 100%;
 }
 
+.table-responsive > .dataTables_wrapper{
+
+  background-color: white !important;
+  padding: 10px;
+}
+
 /* Lastly, apply responsive CSS fixes as necessary */
 @media (max-width: 767px) {
   #footer {

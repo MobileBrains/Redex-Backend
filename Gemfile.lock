@@ -24,6 +24,8 @@ GEM
       erubis (~> 2.7.0)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.0, >= 1.0.2)
+    active_importer (0.2.6)
+      roo
     activejob (5.0.0.1)
       activesupport (= 5.0.0.1)
       globalid (>= 0.3.6)
@@ -211,6 +213,10 @@ GEM
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
     rolify (5.1.0)
+    roo (2.5.1)
+      nokogiri (~> 1)
+      rubyzip (~> 1.1, < 2.0.0)
+    rubyzip (1.2.0)
     sass (3.4.22)
     sass-rails (5.0.6)
       railties (>= 4.0.0, < 6)
@@ -266,6 +272,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  active_importer
   annotate
   autoprefixer-rails
   bootstrap-sass (~> 3.2.0)
@@ -275,6 +282,7 @@ DEPENDENCIES
   devise
   doorkeeper
   figaro
+  font-awesome-rails
   grape
   grape-entity
   jbuilder (~> 2.5)
