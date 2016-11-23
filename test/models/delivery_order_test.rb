@@ -13,7 +13,7 @@
 #  adderss        :string
 #  client         :string
 #  externa_guide  :string
-#  state          :integer
+#  state          :integer          default("pendiente")
 #  image          :string
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
