@@ -60,7 +60,9 @@
           <td><%= order.state %></td>
           <td class="text-center">
             <% if(order.state == "entregada") %>
-              <a href="<%= order.image %>" target="_blank"><i class="fa fa-camera fa-2x"></i></a>
+              <a href="<%= order.image %>" target="_blank"><i class="fa fa-camera fa-2x alert-success"></i></a>
+            <% else %>
+              <a href="#" class="notImage" style ="cursor: default"><i class="fa fa-camera fa-2x  alert-danger"></i></a>
             <% end %>
           </td>
         </tr>
@@ -74,5 +76,7 @@
 <script type="text/javascript">
     $(document).ready(function() {
         $('#ordersTable').DataTable();
+        $('.notImage').click(false);
     } );
+    setTimeout('document.location.reload()',30000);
 </script>
