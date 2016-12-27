@@ -1,8 +1,8 @@
 class CreateDeliveryOrders < ActiveRecord::Migration[5.0]
   def change
     create_table :delivery_orders do |t|
-      t.date :radication_at
-      t.date :delivered_at
+      t.datetime :radication_at
+      t.datetime :delivered_at
       t.integer :charge_number
       t.string :delivery_man
       t.string :city
