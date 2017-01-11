@@ -16,8 +16,8 @@ ActiveRecord::Schema.define(version: 20161129161641) do
   enable_extension "plpgsql"
 
   create_table "delivery_orders", force: :cascade do |t|
-    t.date     "radication_at"
-    t.date     "delivered_at"
+    t.datetime "radication_at"
+    t.datetime "delivered_at"
     t.integer  "charge_number"
     t.string   "delivery_man"
     t.string   "city"
