@@ -35,7 +35,7 @@ ActiveRecord::Schema.define(version: 20161129161641) do
   create_table "devolutions", force: :cascade do |t|
     t.integer  "devolution_reason"
     t.text     "observation"
-    t.integer  "delivery_order_internal_guide"
+    t.string   "delivery_order_internal_guide"
     t.integer  "user_id"
     t.datetime "created_at",                    null: false
     t.datetime "updated_at",                    null: false

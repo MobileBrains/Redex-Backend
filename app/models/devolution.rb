@@ -15,6 +15,8 @@ class Devolution < ApplicationRecord
 
   belongs_to :user
 
+  scope :devolutions_count, -> (internal_guide) { where(:delivery_order_internal_guide => internal_guide).count }
+
   enum devolution_reason: { DireccionErrada: 0,
                 PermaneceCerrado: 1,
                 ClienteNoConocido: 2,

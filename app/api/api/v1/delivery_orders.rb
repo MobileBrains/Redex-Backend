@@ -17,6 +17,22 @@ module API
           delevery_order.update_attributes(:image => permitted_params[:image_url], :state => 1, :delivered_at => Time.now) if delevery_order.present?
           present :delevery_order, delevery_order, with: DeliveryOrderEntity
         end
+
+        desc "Change delivery order state to ENTREGADA"
+        params do
+          requires :delivery_order_internal_guide, type: String, desc: "Delivery order Internal Guide"
+        end
+        post "/delivered" do
+          delivery_order = DeliveryOrder.where(internal_guide: permitted_params[:delivery_order_internal_guide]).where(state:0).first
+          if delivery_order.present?
+            delivery_order.update_attributes(:state => 1, :delivered_at => Time.now)
+            present :delivery_order, delivery_order,with: DeliveryOrderEntity
+          else
+            return "Numero de Guia interna equivocado o no existe."
+          end
+
+        end
+
       end
     end
   end

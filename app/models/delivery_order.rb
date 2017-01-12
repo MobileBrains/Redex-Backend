@@ -27,6 +27,8 @@ class DeliveryOrder < ApplicationRecord
                 devolucion: 2
               }
 
+
+
   def self.import(file)
     begin
       csv_header = [
