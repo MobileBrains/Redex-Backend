@@ -11,7 +11,7 @@ module API
         params do
 
           requires :devolution_reason, type: Integer, desc: "Devolution reason"
-          requires :observation, type: String, desc: "Optional observation"
+          optional :observation, type: String, desc: "Optional observation"
           requires :delivery_order_internal_guide, type: String, desc: "Delivery order Internal Guide"
 
         end

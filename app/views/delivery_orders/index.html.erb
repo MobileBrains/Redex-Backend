@@ -59,10 +59,10 @@
           <td><%= order.externa_guide %></td>
           <td><%= order.state %></td>
           <td class="text-center">
-            <% if(order.state == "entregada") %>
+            <% if(order.state == "entregada" && order.image != nil) %>
               <a href="<%= order.image %>" target="_blank"><i class="fa fa-camera fa-2x alert-success"></i></a>
             <% else %>
-              <a href="#" class="notImage" style ="cursor: default"><i class="fa fa-camera fa-2x  alert-danger"></i></a>
+
             <% end %>
           </td>
         </tr>
