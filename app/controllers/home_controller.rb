@@ -2,8 +2,9 @@ class HomeController < ApplicationController
   def hello
   end
 
-  def ensayo
-    @courrier_users = User.with_role(:courrier)
+  def info
+    @courrier_users = User.with_role(:Courrier)
+    puts  "#{@courrier_users}"
     @pending_orders = DeliveryOrder.where(state: 'pendiente')
     @delivered_orders = DeliveryOrder.where(state: 'entregada')
     @devolutions = DeliveryOrder.where(state: 'devolucion')

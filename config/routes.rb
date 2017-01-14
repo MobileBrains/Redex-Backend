@@ -69,7 +69,7 @@ Rails.application.routes.draw do
 
   root to: "home#hello"
   get 'home/hello'
-  get 'home/ensayo'
+  get 'home/info'
 
   post 'home/ordenes'
 
