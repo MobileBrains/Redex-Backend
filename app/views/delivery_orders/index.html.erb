@@ -59,10 +59,8 @@
           <td><%= order.externa_guide %></td>
           <td><%= order.state %></td>
           <td class="text-center">
-            <% if(order.state == "entregada" && order.image != nil) %>
+            <% if((order.state == "entregada" || order.state == "devolucion"  ) && (order.image != "" ) ) %>
               <a href="<%= order.image %>" target="_blank"><i class="fa fa-camera fa-2x alert-success"></i></a>
-            <% else %>
-
             <% end %>
           </td>
         </tr>

@@ -70,7 +70,10 @@ Rails.application.routes.draw do
   root to: "home#hello"
   get 'home/hello'
   get 'home/info'
+  get 'home/devolutionsPage'
 
-  post 'home/ordenes'
+  post 'home/ordersByCourrierName'
+  post 'home/ordersByChargeNumber'
+  post 'home/devolutionReasonAndObservation'
 
 end

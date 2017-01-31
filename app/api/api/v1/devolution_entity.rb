@@ -7,6 +7,8 @@ module API
       expose :observation
       expose :delivery_order_internal_guide
       expose :user_id
+      expose :image
+      expose :delivery_order_id
       expose :created_at
       expose :updated_at
     end
