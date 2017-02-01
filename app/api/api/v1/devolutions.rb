@@ -22,12 +22,17 @@ module API
 
           if delivery_order.present?
             delivery_order.update_attributes(:state => 2,:delivered_at => Time.now)
+
             devolution = Devolution.create({devolution_reason: permitted_params[:devolution_reason],
                                           observation: permitted_params[:observation],
                                           delivery_order_internal_guide: permitted_params[:delivery_order_internal_guide],
                                           image: permitted_params[:image_url],
                                           delivery_order_id: permitted_params[:delivery_order_id],
                                           user_id: current_user.id})
+
+            delivery_order.image = devolution.image
+            puts("imagen: "+ delivery_order.image)
+            delivery_order.save
 
             if devolution.devolution_reason = 1
               devolutions_count = Devolution.devolutions_count(permitted_params[:delivery_order_internal_guide])
