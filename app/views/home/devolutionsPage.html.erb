@@ -26,6 +26,7 @@
           <th>Razon Devolucion</th>
           <th>Observacion</th>
           <th>Fecha Devolucion </th>
+          <th>Imagen </th>
         </tr>
         </thead>
         <% @devolutions.each do |order| %>
@@ -34,6 +35,11 @@
           <td><%= order.devolution_reason %></td>
           <td><%= order.observation %></td>
           <td><%= order.created_at %></td>
+          <td class="text-center">
+            <% if(order.image != nil ) %>
+              <a href="<%= order.image %>" target="_blank"><i class="fa fa-camera fa-2x alert-success"></i></a>
+            <% end %>
+          </td>
         </tr>
         <% end %>
       </table>
