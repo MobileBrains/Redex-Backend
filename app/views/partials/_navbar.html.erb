@@ -10,7 +10,13 @@
         <ul class="nav navbar-nav navbar-right">
             <% if user_signed_in? %>
                 <li>
-                    <%= link_to('Entregas', delivery_orders_path)  %>
+                    <%= link_to('Entregas', delivery_orders_path) %>
+                </li>
+                <li>
+                    <%= link_to('Informe', home_info_path) %>
+                </li>
+                <li>
+                    <%= link_to('Devoluciones', home_devolutionsPage_path) %>
                 </li>
             <% end %>
         <li class="dropdown">
