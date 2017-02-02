@@ -3,8 +3,8 @@
 # Table name: delivery_orders
 #
 #  id             :integer          not null, primary key
-#  radication_at  :date
-#  delivered_at   :date
+#  radication_at  :datetime
+#  delivered_at   :datetime
 #  charge_number  :integer
 #  delivery_man   :string
 #  city           :string
@@ -21,8 +21,13 @@
 
 class DeliveryOrder < ApplicationRecord
   require 'csv'
+  has_many :devolution
 
-  enum state: { pendiente: 0, entregada: 1 }
+  enum state: { pendiente: 0,
+                entregada: 1,
+                devolucion: 2
+              }
+
 
 
   def self.import(file)

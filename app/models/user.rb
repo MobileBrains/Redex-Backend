@@ -20,7 +20,9 @@
 
 class User < ApplicationRecord
 
+  has_many :devolutions
   after_create :assign_default_role
+
 
   rolify
   # Include default devise modules. Others available are:

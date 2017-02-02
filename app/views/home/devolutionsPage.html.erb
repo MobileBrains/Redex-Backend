@@ -1,65 +1,42 @@
-
 <div class="container-fluid">
   <div class="row">
     <div class="col-md-12">
       <div class="text-center">
-        <h1 class="title">Ordenes de Entrega</h1>
+        <h1 class="title">Devoluciones</h1>
         <hr style="width: 100%; border-top: 1px solid #ad3f3f;">
       </div>
     </div>
   </div>
-  <div class="row">
-    <div class="col-md-6 col-xs-12">
-      <%= form_tag import_delivery_orders_path,class: "devise_form", multipart: true do %>
-        <%= file_field_tag :file,  {:accept => '.csv', :onchange => "checkfile(this)", :class => 'textFile'} %>
-        <%= submit_tag "Importar archivo .csv" %>
-      <% end %>
-    </div>
-    <div class="col-md-6 col-xs-12">
-      <%= form_tag excelImport_delivery_orders_path,class: "devise_form", multipart: true do %>
-        <%= file_field_tag :excelFile,  {:accept => '.xlsx', :onchange => "checkExcelfile(this)", :class => 'textFile'} %>
-        <%= submit_tag "Importar archivo Excel .xlsx" %>
-      <% end %>
-    </div>
 
-  </div>
+ devolution_reason             :integer
+#  observation                   :text
+#  delivery_order_internal_guide :integer
+#  user_id                       :integer
+#  created_at                    :datetime         not null
+#  updated_at
 
-  <% if @delivery_orders.count != 0 %>
+  <% if @devolutions.count != 0 %>
   <div class="row">
     <div class="container-fluid">
       <div class="table-responsive">
-      <table class="table table-striped table-inverse dataTableBackground" id="ordersTable" >
+      <table class="table table-striped table-inverse dataTableBackground" id="devolutionsTable" >
         <thead>
         <tr >
-          <th>Fecha de Radicado</th>
-          <th>Fecha de Entrega</th>
-          <th>Numero de Cargue</th>
-          <th>Courrier</th>
-          <th>Ciudad</th>
           <th>Guia Interna</th>
-          <th>Destinatario</th>
-          <th>Direccion</th>
-          <th>Cliente</th>
-          <th>Guia Externa</th>
-          <th>Estado</th>
-          <th>Imagen</th>
+          <th>Razon Devolucion</th>
+          <th>Observacion</th>
+          <th>Fecha Devolucion </th>
+          <th>Imagen </th>
         </tr>
         </thead>
-        <% @delivery_orders.each do |order| %>
+        <% @devolutions.each do |order| %>
         <tr>
-          <td><%= order.radication_at %></td>
-          <td><%= order.delivered_at %></td>
-          <td><%= order.charge_number %></td>
-          <td><%= order.delivery_man %></td>
-          <td><%= order.city %></td>
-          <td><%= order.internal_guide %></td>
-          <td><%= order.destinatary %></td>
-          <td><%= order.adderss %></td>
-          <td><%= order.client %></td>
-          <td><%= order.externa_guide %></td>
-          <td><%= order.state %></td>
+          <td><%= order.delivery_order_internal_guide %></td>
+          <td><%= order.devolution_reason %></td>
+          <td><%= order.observation %></td>
+          <td><%= order.created_at %></td>
           <td class="text-center">
-            <% if((order.state == "entregada" || order.state == "devolucion"  ) && (order.image != nil) ) %>
+            <% if(order.image != nil ) %>
               <a href="<%= order.image %>" target="_blank"><i class="fa fa-camera fa-2x alert-success"></i></a>
             <% end %>
           </td>
@@ -71,9 +48,10 @@
   </div>
   <%end%>
 </div>
+
 <script type="text/javascript">
   $(document).ready(function() {
-        $('#ordersTable').DataTable({
+        $('#devolutionsTable').DataTable({
           "language":{
             "sProcessing":     "Procesando...",
             "sLengthMenu":     "Mostrar _MENU_ registros",
