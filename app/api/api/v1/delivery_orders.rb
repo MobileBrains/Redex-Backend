@@ -21,11 +21,13 @@ module API
         desc "Change delivery order state to ENTREGADA"
         params do
           requires :delivery_order_internal_guide, type: String, desc: "Delivery order Internal Guide"
+          requires :longitude, type: Float, desc: "Longitude coordinates"
+          requires :latitude, type: Float, desc: "Latitude coordinates"
         end
         post "/delivered" do
           delivery_order = DeliveryOrder.where(internal_guide: permitted_params[:delivery_order_internal_guide]).where(state:0).first
           if delivery_order.present?
-            delivery_order.update_attributes(:state => 1, :delivered_at => Time.now)
+            delivery_order.update_attributes(:state => 1, :delivered_at => Time.now, :latitude => permitted_params[:latitude], :longitude => permitted_params[:longitude])
             present :delivery_order, delivery_order,with: DeliveryOrderEntity
           else
             return "Numero de Guia interna equivocado o no existe."

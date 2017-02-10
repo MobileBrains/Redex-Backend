@@ -11,12 +11,14 @@ module API
       expose :city
       expose :internal_guide
       expose :destinatary
-      expose :adderss
+      expose :address
       expose :client
       expose :externa_guide
       expose :state
       expose :image
       expose :created_at
+      expose :latitude
+      expose :longitude
     end
   end
 end

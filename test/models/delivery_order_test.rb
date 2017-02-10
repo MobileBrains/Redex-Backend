@@ -10,13 +10,15 @@
 #  city           :string
 #  internal_guide :string
 #  destinatary    :string
-#  adderss        :string
+#  address        :string
 #  client         :string
 #  externa_guide  :string
 #  state          :integer          default("pendiente")
 #  image          :string
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
+#  latitude       :float
+#  longitude      :float
 #
 
 require 'test_helper'

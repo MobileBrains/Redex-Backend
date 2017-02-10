@@ -37,6 +37,7 @@ gem 'jbuilder', '~> 2.5'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
+gem 'jquery-turbolinks'
 
 gem 'bootstrap-sass', '~> 3.2.0'
 gem 'autoprefixer-rails'
@@ -64,6 +65,12 @@ gem "font-awesome-rails"
 
 #Web Dashboard Administration
 gem 'rails_admin', '~> 1.0'
+
+#Google Maps Geocoding tasks handler (Geocoding is the process of converting addresses to longitude - latitude, and more)
+gem 'geocoder'
+
+#Google Maps integration
+gem 'gmaps4rails'
 
 #Models, Routes and Specs Documentation
 gem 'annotate'

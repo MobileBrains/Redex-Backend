@@ -44,6 +44,8 @@ class HomeController < ApplicationController
 
   end
 
+
+
   def devolutionReasonAndObservation
       @dataResponse = Devolution.where(delivery_order_id: params[:delivery_order_id]).pluck(:devolution_reason, :observation)
       respond_to do |response|

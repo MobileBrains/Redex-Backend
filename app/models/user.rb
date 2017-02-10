@@ -16,12 +16,23 @@
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #  name                   :string
+#  latitude               :float
+#  longitude              :float
+#  location               :string
 #
 
 class User < ApplicationRecord
 
   has_many :devolutions
   after_create :assign_default_role
+
+  geocoded_by :byCoordinates
+  reverse_geocoded_by :latitude, :longitude, :address => :location
+  after_validation :reverse_geocode, if: -> {self.longitude.present? and self.latitude.present? and self.longitude_changed? or self.latitude_changed?  }   # auto-fetch address
+
+  def byCoordinates
+    [latitude, longitude].compact.join(', ')
+  end
 
 
   rolify

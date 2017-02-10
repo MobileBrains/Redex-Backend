@@ -10,18 +10,30 @@
 #  city           :string
 #  internal_guide :string
 #  destinatary    :string
-#  adderss        :string
+#  address        :string
 #  client         :string
 #  externa_guide  :string
 #  state          :integer          default("pendiente")
 #  image          :string
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
+#  latitude       :float
+#  longitude      :float
 #
 
 class DeliveryOrder < ApplicationRecord
   require 'csv'
-  has_many :devolution
+  has_one :devolution
+
+  geocoded_by :addressJoin
+  reverse_geocoded_by :latitude, :longitude
+  #after_validation :geocode
+
+  def addressJoin
+    [address, city].compact.join(', ')
+  end
+
+  #after_validation :reverse_geocode, if: ->(DeliveryOrder){ DeliveryOrder.address.present? and DeliveryOrder.address_changed? }  # auto-fetch address
 
   enum state: { pendiente: 0,
                 entregada: 1,
@@ -39,7 +51,7 @@ class DeliveryOrder < ApplicationRecord
         :city,
         :internal_guide,
         :destinatary,
-        :adderss,
+        :address,
         :client,
         :externa_guide
       ]

@@ -9,7 +9,7 @@ class DeliveryOrderImporter < ActiveImporter::Base
   column 'CIUDAD', :city
   column 'GUIA_INTERNA', :internal_guide
   column 'DESTINATARIO', :destinatary
-  column 'DIRECCION', :adderss
+  column 'DIRECCION', :address
   column 'CLIENTE', :client
   column 'GUIA_EXTERNA', :externa_guide
 

@@ -8,9 +8,31 @@
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
         <ul class="nav navbar-nav navbar-right">
+
             <% if user_signed_in? %>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                    mapas<span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <% if user_signed_in? %>
+                        <li>
+                            <%= link_to('Entregas', maps_deliveryOrders_path) %>
+                        </li>
+                        <li>
+                            <%= link_to('Mensajeros', maps_courriersLocation_path)  %>
+                        </li>
+                        <li>
+                            <%= link_to('Donde esta mi envio?', new_user_registration_path)  %>
+                        </li>
+                    <% else %>
+                        <li>
+                            <%= link_to('Donde esta mi envio', new_user_registration_path)  %>
+                        </li>
+                    <% end %>
+                  </ul>
+                </li>
                 <li>
-                    <%= link_to('Entregas', delivery_orders_path) %>
+                    <%= link_to('Importar Entregas', delivery_orders_path) %>
                 </li>
                 <li>
                     <%= link_to('Informe', home_info_path) %>
@@ -19,30 +41,30 @@
                     <%= link_to('Devoluciones', home_devolutionsPage_path) %>
                 </li>
             <% end %>
-        <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-            <% if user_signed_in? %>
-                <%= current_user.email %>
-            <% end %>
-            <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <% if user_signed_in? %>
-                <li>
-                    <%= link_to('Editar Usuario', edit_user_registration_path) %>
-                </li>
-                <li>
-                    <%= link_to('Cerrar Sesion', destroy_user_session_path, :method => :delete) %>
-                </li>
-            <% else %>
-                <li>
-                    <%= link_to('Registrarme', new_user_registration_path)  %>
-                </li>
-                <li>
-                    <%= link_to('Entrar', new_user_session_path)  %>
-                </li>
-            <% end %>
-          </ul>
-        </li>
-      </ul>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                <% if user_signed_in? %>
+                    <%= current_user.email %>
+                <% end %>
+                <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <% if user_signed_in? %>
+                    <li>
+                        <%= link_to('Editar Usuario', edit_user_registration_path) %>
+                    </li>
+                    <li>
+                        <%= link_to('Cerrar Sesion', destroy_user_session_path, :method => :delete) %>
+                    </li>
+                <% else %>
+                    <li>
+                        <%= link_to('Registrarme', new_user_registration_path)  %>
+                    </li>
+                    <li>
+                        <%= link_to('Entrar', new_user_session_path)  %>
+                    </li>
+                <% end %>
+              </ul>
+            </li>
+        </ul>
     </div>
 </nav>

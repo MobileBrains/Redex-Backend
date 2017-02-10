@@ -16,6 +16,9 @@
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #  name                   :string
+#  latitude               :float
+#  longitude              :float
+#  location               :string
 #
 
 require 'test_helper'
