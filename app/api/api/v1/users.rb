@@ -28,20 +28,19 @@ module API
           present :delivery_orders, delivery_orders, with: DeliveryOrderEntity
         end
 
-        desc "Update courrier location"
+        desc "Update user location"
         params do
-          requires :user_id, type: Integer, desc: "user uniqe id"
           requires :longitude, type: Float, desc: "Longitude coordinates"
           requires :latitude, type: Float, desc: "Latitude coordinates"
         end
 
         post "/updateLocation" do
-          user = User.where(id: permitted_params[:user_id]).first
+          user = User.where(:id => current_user.id).first
           if user.present?
             user.update_attributes(:latitude => permitted_params[:latitude], :longitude => permitted_params[:longitude])
             present :user, user,with: UserEntity
           else
-            return "Numero de Guia interna equivocado o no existe."
+            return "No fue posible actualizar ubicacion, intente de nuevo."
           end
         end
 
