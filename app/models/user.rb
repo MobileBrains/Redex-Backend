@@ -22,7 +22,7 @@
 #
 
 class User < ApplicationRecord
-
+  has_one :mail_delivery_company
   has_many :devolutions
   after_create :assign_default_role
 
