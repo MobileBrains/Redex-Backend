@@ -10,4 +10,4 @@ Doorkeeper::Application.create(name: "redex_app", uid: "d379011c5fc6ce6d8a78d75e
 
 Role.create([{ name: 'Admin' }, { name: 'Courrier' }, { name: 'CompanyManager' }, { name: 'OfficeManager' }])
 
-User.create([{ email: 'admin@mail.com', name: 'JOSE OLIVER MARIN PINEDA', password: '1234321', roles: [Role.find_by_name('Admin')] },{ email: 'redexmanizales@une.net.co', name: 'JOSE OLIVER MARIN PINEDA', password: 'casa20152015', roles: [Role.find_by_name('Admin')] },])
+User.create([{ latitude: '12',longitude: '12', location: 'cra 43', mail_delivery_office_id: 12, email: 'admin@mail.com', name: 'JOSE OLIVER MARIN PINEDA', password: '1234321', roles: [Role.find_by_name('Admin')] },{ email: 'redexmanizales@une.net.co', name: 'JOSE OLIVER MARIN PINEDA', password: 'casa20152015', roles: [Role.find_by_name('Admin')] },])

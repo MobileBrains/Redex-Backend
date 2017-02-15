@@ -21,6 +21,7 @@ class MailDeliveryOffice < ApplicationRecord
   belongs_to :mail_delivery_company
   has_many :user
   belongs_to :mail_delivery_office_manager, :class_name => "User", foreign_key: :user_id
+  has_many :delivery_order
 
 
   geocoded_by :address
