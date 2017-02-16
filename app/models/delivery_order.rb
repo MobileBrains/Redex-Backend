@@ -29,7 +29,7 @@ class DeliveryOrder < ApplicationRecord
 
   geocoded_by :addressJoin
   reverse_geocoded_by :latitude, :longitude
-  #after_validation :geocode
+  after_validation :geocode
 
   def addressJoin
     [address, city].compact.join(', ')
@@ -60,6 +60,7 @@ class DeliveryOrder < ApplicationRecord
 
       CSV.foreach(file.path, {:headers => true, skip_lines: /;;;/, col_sep: ';', encoding: Encoding::ISO_8859_1}) do |row|
         delivery_order = DeliveryOrder.where(internal_guide: row[4])
+
         delivery_order_params = [csv_header,row[0..(row.size-2)]].transpose
         delivery_order_hash = Hash[*delivery_order_params.flatten(1)]
         if delivery_order.count == 1

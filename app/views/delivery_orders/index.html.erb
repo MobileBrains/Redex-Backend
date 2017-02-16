@@ -1,5 +1,6 @@
 
 <div class="container-fluid">
+
   <div class="row">
     <div class="col-md-12">
       <div class="text-center">
@@ -18,6 +19,7 @@
     <div class="col-md-6 col-xs-12">
       <%= form_tag excelImport_delivery_orders_path,class: "devise_form", multipart: true do %>
         <%= file_field_tag :excelFile,  {:accept => '.xlsx', :onchange => "checkExcelfile(this)", :class => 'textFile'} %>
+        <%= hidden_field_tag 'mail_delivery_office_id', current_user.mail_delivery_office_id %>
         <%= submit_tag "Importar archivo Excel .xlsx" %>
       <% end %>
     </div>

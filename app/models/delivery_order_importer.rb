@@ -13,6 +13,10 @@ class DeliveryOrderImporter < ActiveImporter::Base
   column 'CLIENTE', :client
   column 'GUIA_EXTERNA', :externa_guide
 
+  on :row_processing do
+    model.mail_delivery_office_id = params[:mail_delivery_office_id]
+  end
+
   on :import_failed do |ex|
     Rails.logger.error("Could not start importing data: #{ex}")
   end
