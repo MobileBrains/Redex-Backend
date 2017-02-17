@@ -32,12 +32,18 @@ module API
         params do
           requires :longitude, type: Float, desc: "Longitude coordinates"
           requires :latitude, type: Float, desc: "Latitude coordinates"
+          optional :location_type, type: Float, desc: "Location Type"
         end
-
         post "/updateLocation" do
           user = User.where(:id => current_user.id).first
           if user.present?
             user.update_attributes(:latitude => permitted_params[:latitude], :longitude => permitted_params[:longitude])
+
+            courrierLocation = CourriersLocation.create({latitude: permitted_params[:latitude],
+                                          longitude: permitted_params[:longitude],
+                                          location_type: permitted_params[:location_type],
+                                          user_id: current_user.id})
+            courrierLocation.save
             present :user, user,with: UserEntity
           else
             return "No fue posible actualizar ubicacion, intente de nuevo."

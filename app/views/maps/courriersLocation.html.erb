@@ -7,7 +7,16 @@
     </div>
     <div class="col-md-3">
       <ul>
-        <li><button id="refreshLocations" style="width: 100%; height: 40px">Actualizar Ubicaciones <i class="fa fa-refresh" aria-hidden="true"></i></button></li>
+        <li>
+          <button id="refreshLocations" style="width: 100%; height: 40px">Actualizar Ubicaciones <i class="fa fa-refresh" aria-hidden="true"></i></button>
+        </li>
+        <li>
+          <div class="pull-right" style="margin: 10px 10px;">
+            <label class="text_white">Mensajero:</label>
+            <%= collection_select(:user, :name, @courriers, :name, :name, {prompt: true},
+            {:onchange => "mapByCourrier()"} )%>
+          </div>
+        </li>
       </ul>
     </div>
   </div>
@@ -30,6 +39,34 @@ function intializeMap(){
     handler.bounds.extendWith(markers);
     handler.fitMapToBounds();
   });
+}
+
+function intializeMapByCourrier(data){
+  handler = Gmaps.build('Google');
+  handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
+    markers = handler.addMarkers(data);
+    handler.bounds.extendWith(markers);
+    handler.fitMapToBounds();
+  });
+}
+
+function mapByCourrier(){
+
+  $.ajax({
+          url: '/maps/mapByCourrier/',
+          type: 'POST',
+          data: {
+            courrier_name: $('#user_name').val()
+          },
+          success: function(data) {
+            var d = data;
+            console.log("esto"+ d);
+            intializeMapByCourrier(data)
+          },
+          error: function(data) {
+            console.log(data);
+          }
+        });
 }
 
 </script>

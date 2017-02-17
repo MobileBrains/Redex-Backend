@@ -15,6 +15,7 @@ class DeliveryOrderImporter < ActiveImporter::Base
 
   on :row_processing do
     model.mail_delivery_office_id = params[:mail_delivery_office_id]
+    model.uploaded_by = params[:uploaded_by]
   end
 
   on :import_failed do |ex|

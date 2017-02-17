@@ -19,7 +19,6 @@ class MailDeliveryCompany < ApplicationRecord
   belongs_to :mail_delivery_company_manager, :class_name => "User", foreign_key: :user_id
   has_many :mail_delivery_office
 
-
   geocoded_by :address
   after_validation :geocode, if: -> {self.address? or self.address_changed? }#after_validation :geocode
 

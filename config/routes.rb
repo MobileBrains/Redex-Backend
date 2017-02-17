@@ -73,6 +73,7 @@ Rails.application.routes.draw do
   get 'home/devolutionsPage'
   get 'maps/deliveryOrders'
   get 'maps/courriersLocation'
+  post 'maps/mapByCourrier'
 
   post 'home/ordersByCourrierName'
   post 'home/ordersByChargeNumber'

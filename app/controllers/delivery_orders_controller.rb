@@ -17,7 +17,9 @@ class DeliveryOrdersController < ApplicationController
   def excelImport
     begin
       mail_delivery_office_id = current_user.mail_delivery_office_id
-      DeliveryOrderImporter.import(params[:excelFile],params: {mail_delivery_office_id: mail_delivery_office_id})
+      uploaded_by = current_user.id
+
+      DeliveryOrderImporter.import(params[:excelFile],params: {mail_delivery_office_id: mail_delivery_office_id,uploaded_by: uploaded_by})
       redirect_to delivery_orders_path, notice: "Entregas importadas correctamente."
     rescue => e
       puts "DeliveryOrdersController.excelImport => exception: #{e}"

@@ -20,6 +20,7 @@
 #  latitude                :float
 #  longitude               :float
 #  mail_delivery_office_id :integer
+#  uploaded_by             :integer
 #
 
 require 'test_helper'
