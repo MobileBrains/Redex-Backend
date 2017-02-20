@@ -62,6 +62,7 @@ gem 'active_importer'
 
 # Font awasome Icons
 gem "font-awesome-rails"
+gem 'font-awesome-sass'
 
 #Web Dashboard Administration
 gem 'rails_admin', '~> 1.0'

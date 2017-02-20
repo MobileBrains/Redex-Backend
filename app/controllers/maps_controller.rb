@@ -13,12 +13,21 @@ class MapsController < ApplicationController
               "height" => 32
             })
         end
+        if order.state == "devolucion"
+          marker.picture({
+              "url" => "http://www.myiconfinder.com/uploads/iconsets/32-32-369f997cef4f440c5394ed2ae6f8eecd.png",
+              "width" => 32,
+              "height" => 32
+            })
+
+        end
 
         marker.infowindow "Estado: #{order.state}
                             <hr>
                           Guia Interna: #{order.internal_guide} <br>
                           Destinatario: #{order.destinatary} <br>
                           Direccion: #{order.address} <br>
+                          Fecha de entrega: #{order.delivered_at}
                             <hr>
                           Mensajero Encargado: #{order.delivery_man}
                           "
