@@ -47,13 +47,14 @@ class MapsController < ApplicationController
               "height" => 32
             })
 
-        marker.infowindow " nombre: #{courrier.id} <br>
-                            nombre: #{courrier.name} <br>
-                            Ultima Ubicacion: #{courrier.location}  "
+        marker.infowindow " nombre: #{courrier.name} <br>
+                            Ultima Ubicacion: #{courrier.location}
+                            <hr>
+                            fecha de ubicacion: #{courrier.updated_at}  "
       end
   end
 
-  def mapByCourrier
+  def oneCourrierOnly
       courrierName = params[:courrier_name]
       @courrier = User.where(name: courrierName).with_role :Courrier
       puts("#{@courrier}")
@@ -68,7 +69,9 @@ class MapsController < ApplicationController
 
           marker.infowindow " id: #{courrier.id} <br>
                               nombre: #{courrier.name} <br>
-                              Ultima Ubicacion: #{courrier.location}  "
+                              Ultima Ubicacion: #{courrier.location}
+                              <hr>
+                              Fecha de Ubicacion: #{courrier.updated_at}  "
         end
       respond_to do |response|
         response.json { render json: @hash}
@@ -77,17 +80,9 @@ class MapsController < ApplicationController
 
   def requestedCourrierRoute
 
-    today_date = Date.today.to_s
-    puts  ("#{today_date} hoy es°")
     courrierName = params[:courrier_name]
     courrier = User.where(name: courrierName).last
-    puts  ("#{courrier.id} id")
-
-    @requestedCourrierLocations = CourriersLocation.where(user_id: courrier.id).where("created_at >= ?", Time.zone.now.beginning_of_day)
-    date = @requestedCourrierLocations[0].created_at
-    puts ("#{@requestedCourrierLocations[0].created_at}")
-
-    puts  ("#{@requestedCourrierLocations} id°")
+    @requestedCourrierLocations = CourriersLocation.where(user_id: courrier.id).where(location_type: "Requested").where("created_at >= ?", Time.zone.now.beginning_of_day)
     @hash = Gmaps4rails.build_markers(@requestedCourrierLocations) do |requestedCourrierLocations, marker|
           marker.lat requestedCourrierLocations.latitude
           marker.lng requestedCourrierLocations.longitude
@@ -97,12 +92,36 @@ class MapsController < ApplicationController
                 "height" => 32
               })
 
-          marker.infowindow " id: #{requestedCourrierLocations} <br>
-                              nombre: #{courrier.name} <br>
-                              Ultima Ubicacion: #{requestedCourrierLocations}<br>
-                              Fecha: #{requestedCourrierLocations.created_at}  "
+          marker.infowindow " Nombre: #{courrier.name} <br>
+                              Ultima Ubicacion: #{requestedCourrierLocations.location}
+                              <hr>
+                              Fecha de ubicacion: #{requestedCourrierLocations.created_at}  "
         end
 
+    respond_to do |response|
+        response.json { render json: @hash }
+      end
+  end
+
+  def automaticCourrierRoute
+
+    courrierName = params[:courrier_name]
+    courrier = User.where(name: courrierName).last
+    @requestedCourrierLocations = CourriersLocation.where(user_id: courrier.id).where(location_type: "Automatic").where("created_at >= ?", Time.zone.now.beginning_of_day)
+    @hash = Gmaps4rails.build_markers(@requestedCourrierLocations) do |requestedCourrierLocations, marker|
+          marker.lat requestedCourrierLocations.latitude
+          marker.lng requestedCourrierLocations.longitude
+          marker.picture({
+                "url" => "https://cdn0.iconfinder.com/data/icons/global-logistics-1-2/73/12-32.png",
+                "width" => 32,
+                "height" => 32
+              })
+
+          marker.infowindow " Nombre: #{courrier.name} <br>
+                              Ultima Ubicacion: #{requestedCourrierLocations.location}
+                              <hr>
+                              Fecha de ubicacion: #{requestedCourrierLocations.created_at}  "
+        end
 
     respond_to do |response|
         response.json { render json: @hash }
