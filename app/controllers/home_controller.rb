@@ -3,18 +3,20 @@ class HomeController < ApplicationController
   end
 
   def info
-    @courrier_users = User.with_role(:Courrier)
-    @pending_orders = DeliveryOrder.where(state: 'pendiente')
-    @delivered_orders = DeliveryOrder.where(state: 'entregada')
-    @devolutions = DeliveryOrder.where(state: 'devolucion')
-    @devolutionsReg = Devolution.all
+    office_id = current_user.mail_delivery_office_id
+    @courrier_users = User.with_role(:Courrier).where(mail_delivery_office_id: office_id)
+    @pending_orders = DeliveryOrder.where(state: 'pendiente').where(mail_delivery_office_id: office_id).where("created_at >= ?", Time.zone.now.beginning_of_day)
+    @delivered_orders = DeliveryOrder.where(state: 'entregada').where(mail_delivery_office_id: office_id).where("created_at >= ?", Time.zone.now.beginning_of_day)
+    @devolutions = DeliveryOrder.where(state: 'devolucion').where(mail_delivery_office_id: office_id).where("created_at >= ?", Time.zone.now.beginning_of_day)
+    @devolutionsReg = Devolution.all.where(mail_delivery_office_id: office_id)
   end
 
   def ordersByCourrierName
+      office_id = current_user.mail_delivery_office_id
       courrierName = params[:name]
-      @pending_orders = DeliveryOrder.where(delivery_man: courrierName, state: "pendiente")
-      @delivered_orders = DeliveryOrder.where(delivery_man: courrierName, state: "entregada")
-      @devolutions = DeliveryOrder.where(delivery_man: courrierName, state: "devolucion")
+      @pending_orders = DeliveryOrder.where(delivery_man: courrierName, state: "pendiente").where(mail_delivery_office_id: office_id).where("created_at >= ?", Time.zone.now.beginning_of_day)
+      @delivered_orders = DeliveryOrder.where(delivery_man: courrierName, state: "entregada").where(mail_delivery_office_id: office_id).where("created_at >= ?", Time.zone.now.beginning_of_day)
+      @devolutions = DeliveryOrder.where(delivery_man: courrierName, state: "devolucion").where(mail_delivery_office_id: office_id).where("created_at >= ?", Time.zone.now.beginning_of_day)
 
       respond_to do |response|
         response.json { render json: @pending_orders + @delivered_orders + @devolutions}
@@ -25,10 +27,11 @@ class HomeController < ApplicationController
   end
 
   def ordersByChargeNumber
+      office_id = current_user.mail_delivery_office_id
       charge_number = params[:charge_number]
-      @pending_orders = DeliveryOrder.where(charge_number: charge_number, state: "pendiente")
-      @delivered_orders = DeliveryOrder.where(charge_number: charge_number, state: "entregada")
-      @devolutions = DeliveryOrder.where(charge_number: charge_number, state: "devolucion")
+      @pending_orders = DeliveryOrder.where(charge_number: charge_number, state: "pendiente").where(mail_delivery_office_id: office_id)
+      @delivered_orders = DeliveryOrder.where(charge_number: charge_number, state: "entregada").where(mail_delivery_office_id: office_id)
+      @devolutions = DeliveryOrder.where(charge_number: charge_number, state: "devolucion").where(mail_delivery_office_id: office_id)
 
       respond_to do |response|
         response.json { render json: @pending_orders + @delivered_orders + @devolutions}
