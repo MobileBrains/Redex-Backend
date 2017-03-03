@@ -47,6 +47,10 @@ $('#showAutomaticLocations').click(function() {
     automaticCourrierRoute()
 });
 
+$('#showTodayAndPendentOrders').click(function() {
+    todayAndPendentOrders()
+});
+
 
 function intializeMap(){
   handler = Gmaps.build('Google');
@@ -134,6 +138,32 @@ function automaticCourrierRoute(){
             console.log(data);
           }
         });
+}
+
+
+function todayAndPendentOrders(){
+  $.ajax({
+          url: '/maps/todayAndPendentOrders/',
+          type: 'POST',
+          data: {
+            courrier_name: $('#user_name').val()
+          },
+          success: function(data) {
+            intializeMapTodayDeliveredOrders(data)
+          },
+          error: function(data) {
+            console.log(data);
+          }
+        });
+}
+
+function intializeMapTodayDeliveredOrders(data){
+  handler = Gmaps.build('Google');
+  handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
+    markers = handler.addMarkers(data);
+    handler.bounds.extendWith(markers);
+    handler.fitMapToBounds();
+  });
 }
 
 </script>

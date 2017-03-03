@@ -1,7 +1,9 @@
 class MapsController < ApplicationController
 
   def deliveryOrders
-      @delivery_orders = DeliveryOrder.where.not(latitude: nil, longitude:nil )
+      office_id = current_user.mail_delivery_office_id
+      @delivery_orders = DeliveryOrder.where.not(latitude: nil, longitude:nil ).where("created_at >= ?", Time.zone.now.beginning_of_day).where(mail_delivery_office_id: office_id)
+      @pendent_orders = DeliveryOrder.where.not(latitude: nil, longitude:nil ).where("created_at >= ?", Time.zone.now.beginning_of_day).where(mail_delivery_office_id: office_id)
       @hash = Gmaps4rails.build_markers(@delivery_orders) do |order, marker|
         marker.lat order.latitude
         marker.lng order.longitude
@@ -126,6 +128,33 @@ class MapsController < ApplicationController
     respond_to do |response|
         response.json { render json: @hash }
       end
+  end
+
+
+  def todayAndPendentOrders
+      office_id = current_user.mail_delivery_office_id
+
+      @todayDeliveredOrders = DeliveryOrder.where.not(latitude: nil, longitude:nil ).where(mail_delivery_office_id: office_id).where(state: "pendiente").where("created_at >= ?", Time.zone.now.beginning_of_day)
+
+      @hash = Gmaps4rails.build_markers(@todayDeliveredOrders) do |todayDeliveredOrders, marker|
+          marker.lat todayDeliveredOrders.latitude
+          marker.lng todayDeliveredOrders.longitude
+          marker.picture({
+                "url" => "https://cdn0.iconfinder.com/data/icons/global-logistics-1-2/73/12-32.png",
+                "width" => 32,
+                "height" => 32
+              })
+
+          marker.infowindow " Nombre: #{courrier.name} <br>
+                              Ultima Ubicacion: #{todayDeliveredOrders.location}
+                              <hr>
+                              Fecha de ubicacion: #{todayDeliveredOrders.created_at}  "
+        end
+
+    respond_to do |response|
+        response.json { render json: @hash }
+      end
+
   end
 
 end

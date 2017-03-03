@@ -29,6 +29,8 @@ class User < ApplicationRecord
   has_many :devolutions
   after_create :assign_default_role
 
+  has_many :courriers_location
+
   geocoded_by :byCoordinates
   reverse_geocoded_by :latitude, :longitude, :address => :location
   after_validation :reverse_geocode, if: -> {self.longitude.present? and self.latitude.present? and self.longitude_changed? or self.latitude_changed?  }   # auto-fetch address

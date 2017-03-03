@@ -71,6 +71,8 @@ Rails.application.routes.draw do
   get 'home/hello'
   get 'home/info'
   get 'home/devolutionsPage'
+  get 'home/courriersLocations'
+
   get 'maps/deliveryOrders'
   get 'maps/courriersLocation'
 
@@ -78,8 +80,10 @@ Rails.application.routes.draw do
   post 'home/ordersByCourrierName'
   post 'home/ordersByChargeNumber'
   post 'home/devolutionReasonAndObservation'
+
   post 'maps/oneCourrierOnly'
   post 'maps/requestedCourrierRoute'
   post 'maps/automaticCourrierRoute'
+  post 'maps/todayAndPendentOrders'
 
 end

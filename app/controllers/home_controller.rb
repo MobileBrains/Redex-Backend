@@ -53,4 +53,8 @@ class HomeController < ApplicationController
       end
   end
 
+  def courriersLocations
+    @courriersLocations = CourriersLocation.all.last(100)
+  end
+
 end
