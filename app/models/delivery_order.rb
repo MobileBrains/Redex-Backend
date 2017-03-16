@@ -32,6 +32,8 @@ class DeliveryOrder < ApplicationRecord
   reverse_geocoded_by :latitude, :longitude
   after_validation :geocode
 
+  scope :ordenedByDeliveredDate, -> { order 'delivered_at ASC' }
+
   def addressJoin
     [address, city].compact.join(', ')
   end

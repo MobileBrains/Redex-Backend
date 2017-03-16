@@ -24,6 +24,12 @@
         <li>
           <button id="showAutomaticLocations" style="width: 100%; height: 40px">Mostrar ubicaciones Automaticas<i class="fa fa-refresh" aria-hidden="true"></i></button>
         </li>
+        <li>
+          <button id="showTodayAndPendentOrders" style="width: 100%; height: 40px">Pendientes entregadas y devolucion<i class="fa fa-refresh" aria-hidden="true"></i></button>
+        </li>
+        <li>
+          <button id="showDeliveredOrdersRoute" style="width: 100%; height: 40px">Ruta de entregas <i class="fa fa-refresh" aria-hidden="true"></i></button>
+        </li>
       </ul>
     </div>
   </div>
@@ -50,6 +56,11 @@ $('#showAutomaticLocations').click(function() {
 $('#showTodayAndPendentOrders').click(function() {
     todayAndPendentOrders()
 });
+
+$('#showDeliveredOrdersRoute').click(function() {
+    deliveredOrdersRoute()
+});
+
 
 
 function intializeMap(){
@@ -140,10 +151,35 @@ function automaticCourrierRoute(){
         });
 }
 
-
 function todayAndPendentOrders(){
   $.ajax({
           url: '/maps/todayAndPendentOrders/',
+          type: 'POST',
+          data: {
+            courrier_name: $('#user_name').val()
+          },
+          success: function(data) {
+            intializeMapTodayDeliveredOrders(data)
+          },
+          error: function(data) {
+            console.log(data);
+          }
+        });
+}
+
+function intializeMapTodayDeliveredOrders(data){
+  handler = Gmaps.build('Google');
+  handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
+    markers = handler.addMarkers(data);
+    handler.bounds.extendWith(markers);
+    handler.fitMapToBounds();
+  });
+}
+
+
+function deliveredOrdersRoute(){
+  $.ajax({
+          url: '/maps/deliveredOrdersRoute/',
           type: 'POST',
           data: {
             courrier_name: $('#user_name').val()

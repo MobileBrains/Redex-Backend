@@ -103,7 +103,31 @@
                     </div>
 
                   </li>
-
+                  <!--
+                  <li>
+                     <div class="form-group">
+                        <div class='input-group date' id='datetimepicker1'>
+                            <input id="date1" type='text' class="form-control" />
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+                  </li>
+                  <li>
+                     <div class="form-group">
+                        <div class='input-group date' id='datetimepicker2'>
+                            <input id="date2" type='text' class="form-control" />
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+                  </li>
+                  <li>
+                    <button id="search_charge" onclick="infoBetweenDates()"> Consultar </button>
+                  </li>
+                  -->
                 </ul>
                 <div class="tab-content" id="myTabContent">
                   <div class="tab-pane fade active in" role="tabpanel" id="pending" aria-labelledby="home-tab">
@@ -200,6 +224,7 @@
 <script type="text/javascript">
     $(document).ready(function() {
         $('#pendent_orders').DataTable({
+          "pageLength": 50,
           "language":{
             "sProcessing":     "Procesando...",
             "sLengthMenu":     "Mostrar _MENU_ registros",
@@ -226,6 +251,7 @@
           }
         });
         $('#delivered_orders').DataTable({
+          "pageLength": 50,
           "language":{
             "sProcessing":     "Procesando...",
             "sLengthMenu":     "Mostrar _MENU_ registros",
@@ -252,6 +278,7 @@
           }
         });
         $('#devolutions').DataTable({
+          "pageLength": 50,
           "language":{
             "sProcessing":     "Procesando...",
             "sLengthMenu":     "Mostrar _MENU_ registros",
@@ -278,6 +305,12 @@
           }
         });
         $('.notImage').click(false);
+
+
+        $('#datetimepicker1').datetimepicker();
+        $('#datetimepicker2').datetimepicker();
+
+
     });
 
     function getInfoByChargeNumber(){
@@ -460,6 +493,99 @@
           console.log(data);
         }
       });
+    }
+
+    function infoBetweenDates(){
+      $.ajax({
+          url: '/home/infoBetweenDates/',
+          type: 'POST',
+          data: {
+            name: $('#user_name').val(),
+            date1: $('#date1').val(),
+            date2: $('#date2').val()
+          },
+          success: function(data) {
+            responsaData = data;
+
+            var total = data.length;
+
+            var pendent_count=0;
+
+            var delivered_count=0;
+
+            var devolutions_count=0;
+
+            var t_pendent_orders = $("#pendent_orders").DataTable();
+            var t_delivered_orders = $("#delivered_orders").DataTable();
+            var t_devolutions = $("#devolutions").DataTable();
+
+            //cleaning table
+            t_pendent_orders.clear()
+              .draw();
+            t_delivered_orders.clear()
+              .draw();
+            t_devolutions.clear()
+              .draw();
+
+            //populating table
+            $.each(responsaData,function(index,value){
+
+              if (value.state == "pendiente") {
+                pendent_count++;
+                $("#l_pendents").html(pendent_count);
+                t_pendent_orders.row.add( [
+                value.charge_number,
+                value.radication_at,
+                value.delivery_man,
+                value.internal_guide,
+                value.destinatary,
+                value.city,
+                value.address,
+                '<button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#'+value.internal_guide +'">Ver más</button><!-- Modal --><div class="modal fade" id="'+value.internal_guide +'" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><h4 class="modal-title" id="myModalLabel">Detalles Guia</h4></div><div class="modal-body"><dl><dt><div class="row"><div class="col-md-3"><label class="pull-left">Guia Interna: </label></div><div class="col-md-9 text-center"><label style="color:red">'+ value.internal_guide +'</label></div></div></dt><hr class="hr_modal"><dt><div class="row"><div class="col-md-3"><label class="pull-left">Fecha Radicado: </label></div><div class="col-md-9 text-center">'+ value.radication_at +'</div></div></dt><hr class="hr_modal"><dt><div class="row"><div class="col-md-3"><label class="pull-left">Fecha Entrega: </label></div><div class="col-md-9 text-center">' + value.delivered_at + '</div></div></dt><hr class="hr_modal"><dt><div class="row"><div class="col-md-3"><label class="pull-left">Numero Cargue: </label></div><div class="col-md-9 text-center">' + value.charge_number + '</div></div></dt><hr class="hr_modal"><dt><div class="row"><div class="col-md-3"><label class="pull-left">Mensajero: </label></div><div class="col-md-9 text-center">' + value.delivery_man + '</div></div></dt><hr class="hr_modal"><dt><div class="row"><div class="col-md-3"><label class="pull-left">Ciudad: </label></div><div class="col-md-9 text-center">' + value.city + '</div></div></dt><hr class="hr_modal"><dt><div class="row"><div class="col-md-3"><label class="pull-left">Destinatario: </label></div><div class="col-md-9 text-center">' + value.destinatary + '</div></div></dt><hr class="hr_modal"><dt><div class="row"><div class="col-md-3"><label class="pull-left">Direccion: </label></div><div class="col-md-9 text-center">' + value.address + '</div></div></dt><hr class="hr_modal"><dt><div class="row"><div class="col-md-3"><label class="pull-left">Cliente: </label></div><div class="col-md-9 text-center">'+ value.client + '</div></div></dt><hr class="hr_modal"><dt><div class="row"><div class="col-md-3"><label class="pull-left">Guia Externa: </label></div><div class="col-md-9 text-center">' + value.externa_guide + '</div></div></dt><hr class="hr_modal"><dt><div class="row"><div class="col-md-3"><label class="pull-left">Estado: </label></div><div class="col-md-9 text-center">' + value.state + '</div></div></dt><hr class="hr_modal"></dl></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-dismiss="modal" style="width: 100%">Cerrar</button></div></div></div></div>'
+                ] ).draw( false );
+              }
+              else if (value.state == "entregada") {
+                delivered_count++;
+                $("#l_delivered").html(delivered_count);
+                t_delivered_orders.row.add( [
+                value.charge_number,
+                value.radication_at,
+                value.delivered_at,
+                value.delivery_man,
+                value.internal_guide,
+                value.destinatary,
+                value.city,
+                value.address,
+                value.image === null || value.image === undefined || value.image === "" ? '':'<div class="text-center"><a href="'+ value.image +'" target="_blank"><i class="fa fa-camera fa-2x alert-success"></i></a></div>' ,
+                '<button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#'+value.internal_guide +'">Ver más</button><!-- Modal --><div class="modal fade" id="'+value.internal_guide +'" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><h4 class="modal-title" id="myModalLabel">Detalles Guia</h4></div><div class="modal-body"><dl><dt><div class="row"><div class="col-md-3"><label class="pull-left">Guia Interna: </label></div><div class="col-md-9 text-center"><label style="color:red">'+ value.internal_guide +'</label></div></div></dt><hr class="hr_modal"><dt><div class="row"><div class="col-md-3"><label class="pull-left">Fecha Radicado: </label></div><div class="col-md-9 text-center">'+ value.radication_at +'</div></div></dt><hr class="hr_modal"><dt><div class="row"><div class="col-md-3"><label class="pull-left">Fecha Entrega: </label></div><div class="col-md-9 text-center">' + value.delivered_at + '</div></div></dt><hr class="hr_modal"><dt><div class="row"><div class="col-md-3"><label class="pull-left">Numero Cargue: </label></div><div class="col-md-9 text-center">' + value.charge_number + '</div></div></dt><hr class="hr_modal"><dt><div class="row"><div class="col-md-3"><label class="pull-left">Mensajero: </label></div><div class="col-md-9 text-center">' + value.delivery_man + '</div></div></dt><hr class="hr_modal"><dt><div class="row"><div class="col-md-3"><label class="pull-left">Ciudad: </label></div><div class="col-md-9 text-center">' + value.city + '</div></div></dt><hr class="hr_modal"><dt><div class="row"><div class="col-md-3"><label class="pull-left">Destinatario: </label></div><div class="col-md-9 text-center">' + value.destinatary + '</div></div></dt><hr class="hr_modal"><dt><div class="row"><div class="col-md-3"><label class="pull-left">Direccion: </label></div><div class="col-md-9 text-center">' + value.address + '</div></div></dt><hr class="hr_modal"><dt><div class="row"><div class="col-md-3"><label class="pull-left">Cliente: </label></div><div class="col-md-9 text-center">'+ value.client + '</div></div></dt><hr class="hr_modal"><dt><div class="row"><div class="col-md-3"><label class="pull-left">Guia Externa: </label></div><div class="col-md-9 text-center">' + value.externa_guide + '</div></div></dt><hr class="hr_modal"><dt><div class="row"><div class="col-md-3"><label class="pull-left">Estado: </label></div><div class="col-md-9 text-center">' + value.state + '</div></div></dt><hr class="hr_modal">'+( value.image === null || value.image === undefined || value.image === "" ? '' : '<dt><div class="row"><div class="col-md-3"><label class="pull-left">Imagen: </label></div><div class="col-md-9 text-center"><img style="width: 80%" src=' +value.image +'></div></div></dt>') +'</dl></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-dismiss="modal" style="width: 100%">Cerrar</button></div></div></div></div>'
+                ] ).draw( false );
+              }
+              else if (value.state == "devolucion") {
+                devolutions_count++;
+                $("#l_devolutions").html(devolutions_count);
+                t_devolutions.row.add( [
+                value.charge_number,
+                value.radication_at,
+                value.delivered_at,
+                value.delivery_man,
+                value.city,
+                value.internal_guide,
+                value.destinatary,
+                value.address,
+                value.image === null || value.image === undefined || value.image === "" ? '':'<div class="text-center"><a href="'+ value.image +'" target="_blank"><i class="fa fa-camera fa-2x alert-success"></i></a></div>',
+                '<button type="button" onclick="getDevolutionReasonAndObservation('+value.id+')" class="btn btn-primary btn-md" data-toggle="modal" data-target="#'+value.internal_guide +'">Ver más</button><!-- Modal --><div class="modal fade" id="'+value.internal_guide +'" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><h4 class="modal-title" id="myModalLabel">Detalles Guia</h4></div><div class="modal-body"><dl><dt><div class="row"><div class="col-md-3"><label class="pull-left">Guia Interna: </label></div><div class="col-md-9 text-center"><label style="color:red">'+ value.internal_guide +'</label></div></div></dt><hr class="hr_modal"><dt><div class="row"><div class="col-md-3"><label class="pull-left">Fecha Radicado: </label></div><div class="col-md-9 text-center">'+ value.radication_at +'</div></div></dt><hr class="hr_modal"><dt><div class="row"><div class="col-md-3"><label class="pull-left">Fecha Entrega: </label></div><div class="col-md-9 text-center">' + value.delivered_at + '</div></div></dt><hr class="hr_modal"><dt><div class="row"><div class="col-md-3"><label class="pull-left">Numero Cargue: </label></div><div class="col-md-9 text-center">' + value.charge_number + '</div></div></dt><hr class="hr_modal"><dt><div class="row"><div class="col-md-3"><label class="pull-left">Mensajero: </label></div><div class="col-md-9 text-center">' + value.delivery_man + '</div></div></dt><hr class="hr_modal"><dt><div class="row"><div class="col-md-3"><label class="pull-left">Ciudad: </label></div><div class="col-md-9 text-center">' + value.city + '</div></div></dt><hr class="hr_modal"><dt><div class="row"><div class="col-md-3"><label class="pull-left">Destinatario: </label></div><div class="col-md-9 text-center">' + value.destinatary + '</div></div></dt><hr class="hr_modal"><dt><div class="row"><div class="col-md-3"><label class="pull-left">Direccion: </label></div><div class="col-md-9 text-center">' + value.address + '</div></div></dt><hr class="hr_modal"><dt><div class="row"><div class="col-md-3"><label class="pull-left">Cliente: </label></div><div class="col-md-9 text-center">'+ value.client + '</div></div></dt><hr class="hr_modal"><dt><div class="row"><div class="col-md-3"><label class="pull-left">Guia Externa: </label></div><div class="col-md-9 text-center">' + value.externa_guide + '</div></div></dt><hr class="hr_modal"><dt><div class="row"><div class="col-md-3"><label class="pull-left">Estado: </label></div><div class="col-md-9 text-center">' + value.state + '</div></div></dt><hr class="hr_modal"><dt><div class="row"><div class="col-md-3"><label class="pull-left">Razon de devolucion:</label></div><div class="col-md-9 text-center" id="devolutionReason_'+value.id+'"></div></div></dt><hr class="hr_modal"><dt><div class="row"><div class="col-md-3"><label class="pull-left">Observacion: </label></div><div class="col-md-9 text-center" id="observation_'+value.id+'"></div></div></dt><hr class="hr_modal">'+( value.image === null || value.image === undefined || value.image === "" ? '' : '<dt><div class="row"><div class="col-md-3"><label class="pull-left">Imagen: </label></div><div class="col-md-9 text-center"><img style="width: 80%" src=' +value.image +'></div></div></dt>') +'</dl></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-dismiss="modal" style="width: 100%">Cerrar</button></div></div></div></div>'
+                ] ).draw( false );
+
+              }
+              //alert("s"+responsaData[index].state+value.delivery_man);
+            });
+            progress(pendent_count,delivered_count,devolutions_count,total);
+            return(responsaData);
+          },
+          error: function(data) {
+            console.log(data);
+          }
+        });
     }
 
     function getDevolutionReasonAndObservation(delivery_order_id){

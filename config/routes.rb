@@ -80,10 +80,12 @@ Rails.application.routes.draw do
   post 'home/ordersByCourrierName'
   post 'home/ordersByChargeNumber'
   post 'home/devolutionReasonAndObservation'
+  post 'home/infoBetweenDates'
 
   post 'maps/oneCourrierOnly'
   post 'maps/requestedCourrierRoute'
   post 'maps/automaticCourrierRoute'
   post 'maps/todayAndPendentOrders'
+  post 'maps/deliveredOrdersRoute'
 
 end
