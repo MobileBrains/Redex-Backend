@@ -24,8 +24,12 @@ module API
 
         desc "Get all delivery orders for the authenticated user"
         post "/orders" do
-          delivery_orders = DeliveryOrder.where(:delivery_man => current_user.name).order('state asc')
-          present :delivery_orders, delivery_orders, with: DeliveryOrderEntity
+          today_delivery_orders = DeliveryOrder.where("created_at >= ?", Time.zone.now.beginning_of_day).where(:delivery_man => current_user.name).order('state asc')
+          pendents_orders = DeliveryOrder.where.not("created_at >= ?", Time.zone.now.beginning_of_day).where(:delivery_man => current_user.name, state: "pendiente").order('state asc')
+
+          orders = today_delivery_orders + pendents_orders
+
+          present :delivery_orders, orders, with: DeliveryOrderEntity
         end
 
         desc "Update user location"

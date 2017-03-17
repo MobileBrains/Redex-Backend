@@ -13,18 +13,15 @@ class HomeController < ApplicationController
 
   def infoBetweenDates
     office_id = current_user.mail_delivery_office_id
-    courrierName = params[:user_name]
+    courrierName = params[:name]
 
 
-    @orders = DeliveryOrder.where(:created_at => params[:date1].to_time.strftime("%m/%d/%Y").beginning_of_day..params[:date2].to_time.strftime("%m/%d/%Y").end_of_day)
-    #@pending_orders = DeliveryOrder.where(state: 'pendiente').where(mail_delivery_office_id: office_id).where("created_at >= ?", Time.zone.now.beginning_of_day)
-    #@delivered_orders = DeliveryOrder.where(state: 'entregada').where(mail_delivery_office_id: office_id).where("created_at >= ?", Time.zone.now.beginning_of_day)
-    #@devolutions = DeliveryOrder.where(state: 'devolucion').where(mail_delivery_office_id: office_id).where("created_at >= ?", Time.zone.now.beginning_of_day)
-    #@devolutionsReg = Devolution.all.where(mail_delivery_office_id: office_id)
+    @orders = DeliveryOrder.where(:created_at => params[:date1].to_date.beginning_of_day..params[:date2].to_date.end_of_day).where(delivery_man: courrierName, mail_delivery_office_id: office_id)
+
+
 
     respond_to do |response|
         response.json { render json: @orders }
-        #response.json { render json: @pending_orders + @delivered_orders + @devolutions}
 
         #delivered.json { render json: @delivered_orders }
         #devolution.json { render json: @devolutions }

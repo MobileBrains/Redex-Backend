@@ -6,6 +6,47 @@
                 <hr style="width: 100%; border-top: 1px solid #ad3f3f;">
 
             </div>
+            <div class="col-md-12">
+              <div class="row">
+                <ul class="list-inline">
+                  <li >
+                    <div style="margin: 10px 10px;">
+                      <label class="text_white">Mensajero:</label>
+                      <%puts "#{@courrier_users[0]}" %>
+                      <%= collection_select(:user, :name, @courrier_users, :name, :name, {prompt: true},
+                      {:onchange => "getInfoByCourrierName()"} )%>
+                    </div>
+                  </li>
+
+                  <li>
+                    <div class="form-group form-inline">
+                      <div class='input-group date' id='datetimepicker1'>
+                          <input id="date1" type='text' class="form-control" />
+                          <span class="input-group-addon">
+                              <span class="glyphicon glyphicon-calendar"></span>
+                          </span>
+                      </div>
+                      <div class='input-group date' id='datetimepicker2'>
+                        <input id="date2" type='text' class="form-control" />
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                      </div>
+                      <button id="search_charge" onclick="infoBetweenDates()"> Buscar </button>
+                    </div>
+
+                  </li>
+
+                  <li>
+                    <div style="margin: 10px 10px;">
+                    <label for="charge_number" class="text_white">Cargue</label>
+                      <input type="text" name="charge_number" id="charge_number" placeholder="Numero de cargue">
+                      <button id="search_charge" onclick="getInfoByChargeNumber()">Buscar </button>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
             <div class="row">
               <div class="col-md-12">
 
@@ -87,47 +128,6 @@
                   <li class="" role="presentation">
                     <a aria-expanded="false" href="#devolution" role="tab" id="devolution-tab" data-toggle="tab" aria-controls="profile">Devoluciones</a>
                   </li>
-                  <li >
-                  <div class="pull-right" style="margin: 10px 10px;">
-                      <label class="text_white">Mensajero:</label>
-                      <%puts "#{@courrier_users[0]}" %>
-                      <%= collection_select(:user, :name, @courrier_users, :name, :name, {prompt: true},
-                      {:onchange => "getInfoByCourrierName()"} )%>
-                </div>
-                  </li>
-                  <li>
-                    <div class="pull-right" style="margin: 10px 10px;">
-                    <label for="charge_number" class="text_white">Numero de Cargue</label>
-                      <input type="text" name="charge_number" id="charge_number" placeholder="Numero de cargue">
-                      <button id="search_charge" onclick="getInfoByChargeNumber()">Consultar </button>
-                    </div>
-
-                  </li>
-                  <!--
-                  <li>
-                     <div class="form-group">
-                        <div class='input-group date' id='datetimepicker1'>
-                            <input id="date1" type='text' class="form-control" />
-                            <span class="input-group-addon">
-                                <span class="glyphicon glyphicon-calendar"></span>
-                            </span>
-                        </div>
-                    </div>
-                  </li>
-                  <li>
-                     <div class="form-group">
-                        <div class='input-group date' id='datetimepicker2'>
-                            <input id="date2" type='text' class="form-control" />
-                            <span class="input-group-addon">
-                                <span class="glyphicon glyphicon-calendar"></span>
-                            </span>
-                        </div>
-                    </div>
-                  </li>
-                  <li>
-                    <button id="search_charge" onclick="infoBetweenDates()"> Consultar </button>
-                  </li>
-                  -->
                 </ul>
                 <div class="tab-content" id="myTabContent">
                   <div class="tab-pane fade active in" role="tabpanel" id="pending" aria-labelledby="home-tab">
@@ -307,8 +307,14 @@
         $('.notImage').click(false);
 
 
-        $('#datetimepicker1').datetimepicker();
-        $('#datetimepicker2').datetimepicker();
+        $('#datetimepicker1').datetimepicker({
+          format: 'YYYY-MM-DD ',
+          locale: 'es'
+        });
+        $('#datetimepicker2').datetimepicker({
+          format: 'YYYY-MM-DD ',
+          locale: 'es'
+          });
 
 
     });
