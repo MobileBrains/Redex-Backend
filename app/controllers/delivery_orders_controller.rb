@@ -6,7 +6,7 @@ class DeliveryOrdersController < ApplicationController
 
   def import
     begin
-      DeliveryOrderImportWorker.perform_async(params[:file].path)
+      DeliveryOrderImportWorker.perform_async(params[:file].tempfile.path)
       redirect_to delivery_orders_path, notice: "Las entregas estan siendo procesadas."
     rescue => e
       puts "DeliveryOrdersController.import => exception: #{e}"
@@ -19,7 +19,7 @@ class DeliveryOrdersController < ApplicationController
       mail_delivery_office_id = current_user.mail_delivery_office_id
       uploaded_by = current_user.id
 
-      DeliveryOrderExcelImportWorker.perform_async(params[:excelFile].path, mail_delivery_office_id, uploaded_by)
+      DeliveryOrderExcelImportWorker.perform_async(params[:excelFile].tempfile.path, mail_delivery_office_id, uploaded_by)
       redirect_to delivery_orders_path, notice: "Las entregas estan siendo procesadas."
     rescue => e
       puts "DeliveryOrdersController.excelImport => exception: #{e}"
