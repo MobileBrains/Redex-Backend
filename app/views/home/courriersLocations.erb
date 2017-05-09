@@ -29,7 +29,7 @@
         <% @courriersLocations.each do |location| %>
         <tr>
           <td><%= location.id %></td>
-          <td><%= location.user.name %></td>
+          <td><%= location.user.name if location.user %></td>
           <td><%= location.created_at %></td>
           <td><%= location.location %> </td>
           <td><%= location.location_type %></td>
