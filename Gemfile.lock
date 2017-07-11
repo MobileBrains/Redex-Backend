@@ -165,7 +165,7 @@ GEM
     rack-accept (0.4.5)
       rack (>= 0.4)
     rack-cors (0.4.1)
-    rack-oauth2 (1.5.1)
+    rack-oauth2 (1.6.2)
       activesupport (>= 2.3)
       attr_required (>= 0.0.5)
       httpclient (>= 2.4)
