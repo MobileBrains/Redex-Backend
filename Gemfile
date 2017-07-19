@@ -79,6 +79,11 @@ gem 'gmaps4rails'
 #Models, Routes and Specs Documentation
 gem 'annotate'
 
+# API authentication
+ gem 'doorkeeper'
+ gem 'rack-oauth2'
+
+
 # API
 group :api do
   gem 'grape'
@@ -87,9 +92,6 @@ group :api do
   gem 'rest-client' # Test API
 end
 
-# API authentication
- gem 'doorkeeper'
- gem 'rack-oauth2'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
