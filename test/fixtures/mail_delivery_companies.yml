@@ -1,0 +1,36 @@
+# == Schema Information
+#
+# Table name: mail_delivery_companies
+#
+#  id         :integer          not null, primary key
+#  name       :string
+#  address    :string
+#  email      :string
+#  phone      :integer
+#  latitude   :float
+#  longitude  :float
+#  user_id    :integer
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  image      :string
+#
+
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  address: MyString
+  email: MyString
+  phone: 1
+  latitude: 1.5
+  longitude: 1.5
+  user_id: 1
+
+two:
+  name: MyString
+  address: MyString
+  email: MyString
+  phone: 1
+  latitude: 1.5
+  longitude: 1.5
+  user_id: 1

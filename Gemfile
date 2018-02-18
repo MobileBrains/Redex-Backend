@@ -34,12 +34,20 @@ gem 'jbuilder', '~> 2.5'
 
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 3.0'
+gem 'sidekiq'
+
+# Manage multiple threads in app start
+gem 'foreman'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
+gem 'jquery-turbolinks'
 
 gem 'bootstrap-sass', '~> 3.2.0'
 gem 'autoprefixer-rails'
+
+gem 'momentjs-rails', '>= 2.9.0'
+gem 'bootstrap3-datetimepicker-rails', '~> 4.14.30'
 
 #Manage the application.yml file
 gem 'figaro'
@@ -61,9 +69,16 @@ gem 'active_importer'
 
 # Font awasome Icons
 gem "font-awesome-rails"
+gem 'font-awesome-sass'
 
 #Web Dashboard Administration
 gem 'rails_admin', '~> 1.0'
+
+#Google Maps Geocoding tasks handler (Geocoding is the process of converting addresses to longitude - latitude, and more)
+gem 'geocoder'
+
+#Google Maps integration
+gem 'gmaps4rails'
 
 #Models, Routes and Specs Documentation
 gem 'annotate'

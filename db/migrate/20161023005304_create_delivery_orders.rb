@@ -8,7 +8,7 @@ class CreateDeliveryOrders < ActiveRecord::Migration[5.0]
       t.string :city
       t.string :internal_guide
       t.string :destinatary
-      t.string :adderss
+      t.string :address
       t.string :client
       t.string :externa_guide
       t.integer :state, default: 0

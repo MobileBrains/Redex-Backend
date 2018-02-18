@@ -1,0 +1,28 @@
+# == Schema Information
+#
+# Table name: devolutions
+#
+#  id                            :integer          not null, primary key
+#  devolution_reason             :integer
+#  observation                   :text
+#  delivery_order_internal_guide :string
+#  user_id                       :integer
+#  created_at                    :datetime         not null
+#  updated_at                    :datetime         not null
+#  image                         :string
+#  delivery_order_id             :integer
+#
+
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  devolution_reason: 1
+  observation: MyText
+  delivery_order_id: 1
+  user_id: 1
+
+two:
+  devolution_reason: 1
+  observation: MyText
+  delivery_order_id: 1
+  user_id: 1

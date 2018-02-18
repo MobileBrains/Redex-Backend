@@ -6,6 +6,7 @@ module API
       mount API::Users
       mount API::Sessions
       mount API::DeliveryOrders
+      mount API::Devolutions
     end
   end
 end

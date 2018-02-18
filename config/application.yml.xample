@@ -5,6 +5,7 @@ DEFAULT_LASTNAME: "marXxxxxx"
 DEFAULT_PHONE: "3xxxxxxxxxx2"
 DEFAULT_ADMIN_EMAIL: "vanmxxxxx@xmail.com"
 DEFAULT_PASSWORD: "mx234234"
+GOOGLE_MAPS_API_KEY: "asd32e232e23apykey"
 
 DATABASE_USER: "postgresUser"
 DATABASE_PASSWORD: "postgresPass"

@@ -1,0 +1,206 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-9">
+      <div class="text-center">
+        <div id="map" style='width: 100%; height: 480px;'></div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <ul style="list-style: none;">
+        <li>
+          <button id="refreshLocations" style="width: 100%; height: 40px">Actualizar Ubicaciones <i class="fa fa-refresh" aria-hidden="true"></i></button>
+        </li>
+        <hr>
+        <li>
+          <div class="pull-right" style="margin: 10px 10px;">
+            <label class="text_white">Mensajero:</label>
+            <%= collection_select(:user, :name, @courriers, :name, :name, {prompt: true},
+            {:onchange => "oneCourrierOnly()"} )%>
+          </div>
+        </li>
+        <li>
+          <button id="showRequestedLocations" style="width: 100%; height: 40px">Mostrar ubicaciones solicitadas<i class="fa fa-refresh" aria-hidden="true"></i></button>
+        </li>
+        <li>
+          <button id="showAutomaticLocations" style="width: 100%; height: 40px">Mostrar ubicaciones Automaticas<i class="fa fa-refresh" aria-hidden="true"></i></button>
+        </li>
+        <li>
+          <button id="showTodayAndPendentOrders" style="width: 100%; height: 40px">Pendientes entregadas y devolucion<i class="fa fa-refresh" aria-hidden="true"></i></button>
+        </li>
+        <li>
+          <button id="showDeliveredOrdersRoute" style="width: 100%; height: 40px">Ruta de entregas <i class="fa fa-refresh" aria-hidden="true"></i></button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+
+$(function(){
+  intializeMap();
+});
+
+$('#refreshLocations').click(function() {
+    location.reload();
+});
+
+$('#showRequestedLocations').click(function() {
+    requestedCourrierRoute()
+});
+
+$('#showAutomaticLocations').click(function() {
+    automaticCourrierRoute()
+});
+
+$('#showTodayAndPendentOrders').click(function() {
+    todayAndPendentOrders()
+});
+
+$('#showDeliveredOrdersRoute').click(function() {
+    deliveredOrdersRoute()
+});
+
+
+
+function intializeMap(){
+  handler = Gmaps.build('Google');
+  handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
+    markers = handler.addMarkers(<%=raw @hash.to_json %>);
+    handler.bounds.extendWith(markers);
+    handler.fitMapToBounds();
+  });
+}
+
+function intializeMapOneCourrierOnly(data){
+  handler = Gmaps.build('Google');
+  handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
+    markers = handler.addMarkers(data);
+    handler.bounds.extendWith(markers);
+    handler.fitMapToBounds();
+  });
+}
+
+function oneCourrierOnly(){
+
+  $.ajax({
+          url: '/maps/oneCourrierOnly/',
+          type: 'POST',
+          data: {
+            courrier_name: $('#user_name').val()
+          },
+          success: function(data) {
+            var d = data;
+            intializeMapOneCourrierOnly(data)
+          },
+          error: function(data) {
+            console.log(data);
+          }
+        });
+}
+
+function intializeMapRequestedRoute(data){
+  handler = Gmaps.build('Google');
+  handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
+    markers = handler.addMarkers(data);
+    handler.bounds.extendWith(markers);
+    handler.fitMapToBounds();
+  });
+}
+
+function requestedCourrierRoute(){
+  $.ajax({
+          url: '/maps/requestedCourrierRoute/',
+          type: 'POST',
+          data: {
+            courrier_name: $('#user_name').val()
+          },
+          success: function(data) {
+            intializeMapRequestedRoute(data)
+          },
+          error: function(data) {
+            console.log(data);
+          }
+        });
+}
+
+function intializeMapAutomaticRoute(data){
+  handler = Gmaps.build('Google');
+  handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
+    markers = handler.addMarkers(data);
+    handler.bounds.extendWith(markers);
+    handler.fitMapToBounds();
+  });
+}
+
+function automaticCourrierRoute(){
+  console.error($('#courrier_name').val())
+
+  $.ajax({
+          url: '/maps/automaticCourrierRoute/',
+          type: 'POST',
+          data: {
+            courrier_name: $('#user_name').val()
+          },
+          success: function(data) {
+            intializeMapAutomaticRoute(data)
+          },
+          error: function(data) {
+            console.log(data);
+          }
+        });
+}
+
+function todayAndPendentOrders(){
+  $.ajax({
+          url: '/maps/todayAndPendentOrders/',
+          type: 'POST',
+          data: {
+            courrier_name: $('#user_name').val()
+          },
+          success: function(data) {
+            intializeMapTodayDeliveredOrders(data)
+          },
+          error: function(data) {
+            console.log(data);
+          }
+        });
+}
+
+function intializeMapTodayDeliveredOrders(data){
+  handler = Gmaps.build('Google');
+  handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
+    markers = handler.addMarkers(data);
+    handler.bounds.extendWith(markers);
+    handler.fitMapToBounds();
+  });
+}
+
+
+function deliveredOrdersRoute(){
+  $.ajax({
+          url: '/maps/deliveredOrdersRoute/',
+          type: 'POST',
+          data: {
+            courrier_name: $('#user_name').val()
+          },
+          success: function(data) {
+            intializeMapTodayDeliveredOrders(data)
+          },
+          error: function(data) {
+            console.log(data);
+          }
+        });
+}
+
+function intializeMapTodayDeliveredOrders(data){
+  handler = Gmaps.build('Google');
+  handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
+    markers = handler.addMarkers(data);
+    handler.bounds.extendWith(markers);
+    handler.fitMapToBounds();
+  });
+}
+
+</script>
+
