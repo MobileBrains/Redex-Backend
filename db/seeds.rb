@@ -10,16 +10,11 @@ Doorkeeper::Application.create(name: "redex_app", uid: "d379011c5fc6ce6d8a78d75e
 
 Role.create([{ name: 'Admin' }, { name: 'Courrier' }, { name: 'CompanyManager' }, { name: 'OfficeManager' },{ name: 'OfficeAsistant'}])
 
-User.create([{
-              latitude: '5.06764833333333',
-              longitude: '-75.5162466666667',
-              location: 'cra 43',
-              mail_delivery_office_id: 1,
-              email: 'admin@mail.com',
-              name: 'JOSE OLIVER MARIN PINEDA',
+User.create([ {
+              email: 'vanmartc@mail.com',
+              name: 'van Medellin',
               password: '1234321',
               roles: [Role.find_by_name('Admin')]},
-
               {
               email: 'donjorge@mail.com',
               name: 'Don Jorge Medellin',

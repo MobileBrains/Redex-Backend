@@ -19,7 +19,7 @@
 class MailDeliveryOffice < ApplicationRecord
 
   belongs_to :mail_delivery_company
-  has_many :user
+  has_many :users
   belongs_to :mail_delivery_office_manager, :class_name => "User", foreign_key: :user_id
 
   has_many :delivery_order

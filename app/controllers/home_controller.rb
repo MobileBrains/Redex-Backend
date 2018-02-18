@@ -2,6 +2,7 @@ class HomeController < ApplicationController
   def hello
   end
 
+  #show courrier users on office of current admin user
   def info
     office_id = current_user.mail_delivery_office_id
     @courrier_users = User.with_role(:Courrier).where(mail_delivery_office_id: office_id)
@@ -47,6 +48,7 @@ class HomeController < ApplicationController
   def ordersByChargeNumber
       office_id = current_user.mail_delivery_office_id
       charge_number = params[:charge_number]
+      @selection = params[:selected]
       @pending_orders = DeliveryOrder.where(charge_number: charge_number, state: "pendiente").where(mail_delivery_office_id: office_id)
       @delivered_orders = DeliveryOrder.where(charge_number: charge_number, state: "entregada").where(mail_delivery_office_id: office_id)
       @devolutions = DeliveryOrder.where(charge_number: charge_number, state: "devolucion").where(mail_delivery_office_id: office_id)

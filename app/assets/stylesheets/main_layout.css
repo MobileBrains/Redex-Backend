@@ -24,6 +24,15 @@ html,body{
 .text_white{
   color: #FCFCFC;
 }
+
+.text_red{
+  color: red;
+}
+
+.hr_red{
+  border-top: 1px solid #ef1010;
+}
+
 .a_red{
   color: red;
   text-decoration: none;

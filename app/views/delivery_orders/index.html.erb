@@ -10,13 +10,7 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-md-6 col-xs-12">
-      <%= form_tag import_delivery_orders_path,class: "devise_form", multipart: true do %>
-        <%= file_field_tag :file,  {:accept => '.csv', :onchange => "checkfile(this)", :class => 'textFile'} %>
-        <%= submit_tag "Importar archivo .csv" %>
-      <% end %>
-    </div>
-    <div class="col-md-6 col-xs-12">
+    <div class="col-md-12 col-xs-12">
       <%= form_tag excelImport_delivery_orders_path,class: "devise_form", multipart: true do %>
         <%= file_field_tag :excelFile,  {:accept => '.xlsx', :onchange => "checkExcelfile(this)", :class => 'textFile'} %>
         <%= submit_tag "Importar archivo Excel .xlsx" %>
