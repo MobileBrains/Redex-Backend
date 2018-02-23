@@ -1,9 +1,9 @@
 # Change these
-server '45.32.166.156', port: 22, roles: [:web, :app, :db], primary: true
+server '207.246.65.231', port: 22, roles: [:web, :app, :db], primary: true
 
-set :repo_url,        'git@github.com:MobileBrains/Redex-Backend.git'
-set :application,     'Redex-Backend'
-set :user,            'redexadmin'
+set :repo_url,        'git@gitlab.com:vanmartc/parkings.git'
+set :application,     'parkings'
+set :user,            'redpmaster'
 set :puma_threads,    [4, 16]
 set :puma_workers,    0
 
@@ -29,7 +29,6 @@ set :puma_init_active_record, true  # Change to false when not using ActiveRecor
 # set :format,        :pretty
 # set :log_level,     :debug
 # set :keep_releases, 5
-
 
 ## Linked Files & Directories (Default None):
 # set :linked_files, %w{config/database.yml}
@@ -62,8 +61,7 @@ namespace :deploy do
   desc 'Initial Deploy'
   task :initial do
     on roles(:app) do
-      #before 'deploy:restart', 'puma:start'
-      before 'deploy:restart', 'foreman:start'
+      before 'deploy:restart', 'puma:start'
       invoke 'deploy'
     end
   end
@@ -71,8 +69,7 @@ namespace :deploy do
   desc 'Restart application'
   task :restart do
     on roles(:app), in: :sequence, wait: 5 do
-      #invoke 'puma:restart'
-      invoke 'foreman:restart'
+      invoke 'puma:restart'
     end
   end
 
@@ -85,44 +82,3 @@ end
 # ps aux | grep puma    # Get puma pid
 # kill -s SIGUSR2 pid   # Restart puma
 # kill -s SIGTERM pid   # Stop puma
-
-
-namespace :foreman do
-  desc "Export the Procfile to Ubuntu's upstart scripts"
-  task :export do
-    on roles(:app) do
-      within current_path do
-        execute "bundle exec foreman export upstart /etc/init --procfile=./Procfile -a #{fetch(:application)} -u #{fetch(:user)} -l #{current_path}/log"
-      end
-    end
-
-  end
-
-  desc "Start the application services"
-  task :start do
-    on roles(:app) do
-      within current_path do
-        execute "foreman start #{fetch(:application)}"
-      end
-    end
-
-  end
-
-  desc "Stop the application services"
-  task :stop do
-    on roles(:app) do
-      within current_path do
-        execute "foreman stop #{fetch(:application)}"
-      end
-    end
-  end
-
-  desc "Restart the application services"
-  task :restart do
-    on roles(:app) do
-      within current_path do
-        execute "foreman start #{fetch(:application)} || foreman restart #{fetch(:application)}"
-      end
-    end
-  end
-end
