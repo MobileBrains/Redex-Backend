@@ -1,9 +1,9 @@
 # Change these
-server '207.246.65.231', port: 22, roles: [:web, :app, :db], primary: true
+server '45.32.166.156', port: 22, roles: [:web, :app, :db], primary: true
 
-set :repo_url,        'git@gitlab.com:vanmartc/parkings.git'
-set :application,     'parkings'
-set :user,            'redpmaster'
+set :repo_url,        'git@github.com:MobileBrains/Redex-Backend.git'
+set :application,     'Redex-Backend'
+set :user,            'redexadmin'
 set :puma_threads,    [4, 16]
 set :puma_workers,    0
 
