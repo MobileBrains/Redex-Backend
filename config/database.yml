@@ -86,6 +86,6 @@ test:
 #
 production:
   <<: *default
-  database: redex_production
-  username: Redex
+  database: <%= ENV['REDEX_DATABASE_DATABASE'] %>
+  username: <%= ENV['REDEX_DATABASE_USERNAME'] %>
   password: <%= ENV['REDEX_DATABASE_PASSWORD'] %>
