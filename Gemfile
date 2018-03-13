@@ -102,6 +102,10 @@ group :development do
   gem 'byebug', platform: :mri
 
   gem 'capistrano', '~> 3.10', '>= 3.10.1'
+    gem 'capistrano-rvm',     require: false
+    gem 'capistrano-rails',   require: false
+    gem 'capistrano-bundler', require: false
+    gem 'capistrano3-puma',   require: false
 end
 
 group :test do
