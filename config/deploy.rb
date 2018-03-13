@@ -111,7 +111,7 @@ namespace :db do
 
         production:
           <<: *default
-          database: #{fetch(:database_name)}_production
+          database: #{fetch(:database_name)}
       EOF
 
       execute "mkdir -p #{shared_path}/config"
@@ -139,7 +139,7 @@ namespace :db do
   desc "Backup the database"
   task :backup do
     on roles(:db) do
-      set :database_name, "#{fetch(:application)}_production"
+      set :database_name, "#{fetch(:application)}"
       set :timestamp, Time.now.utc.strftime('%Y%m%d%H%M%S')
       execute "mkdir -p #{shared_path}/backups"
       execute "cd #{shared_path}; pg_dump -U #{fetch(:user)} #{fetch(:database_name)} -f backups/#{fetch(:timestamp)}.sql"
