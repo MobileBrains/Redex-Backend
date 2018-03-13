@@ -124,7 +124,7 @@ namespace :db do
   desc "Make symlink for database yaml"
   task :link do
     on roles(:app) do
-      execute "ln -nfs #{shared_path}/config/database.yml #{fetch(:deploy_to)}current/config/database.yml"
+      execute "ln -nfs #{shared_path}/config/database.yml #{fetch(:deploy_to)}/current/config/database.yml"
     end
   end
 
