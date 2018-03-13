@@ -139,7 +139,8 @@ namespace :db do
   desc "Backup the database"
   task :backup do
     on roles(:db) do
-      set :database_name, "#{fetch(:application)}"
+      #set :database_name, "#{fetch(:application)}_production"
+      set :database_name, "redex_db"
       set :timestamp, Time.now.utc.strftime('%Y%m%d%H%M%S')
       execute "mkdir -p #{shared_path}/backups"
       execute "cd #{shared_path}; pg_dump -U #{fetch(:user)} #{fetch(:database_name)} -f backups/#{fetch(:timestamp)}.sql"
