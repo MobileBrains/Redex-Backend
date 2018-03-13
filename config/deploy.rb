@@ -131,7 +131,7 @@ namespace :db do
   desc "Migrate Seed database"
   task :migrate do
     on roles(:app) do
-      execute "source ~/.rvm/scripts/rvm && cd #{fetch(:deploy_to)}current && bundle exec rake RAILS_ENV='#{fetch(:rails_env)}' db:migrate"
+      execute "source ~/.rvm/scripts/rvm && cd #{fetch(:deploy_to)}/current && bundle exec rake RAILS_ENV='#{fetch(:rails_env)}' db:migrate"
       # execute "source ~/.rvm/scripts/rvm && cd #{fetch(:deploy_to)}current && bundle exec rake RAILS_ENV='#{fetch(:rails_env)}' db:seed"
     end
   end
