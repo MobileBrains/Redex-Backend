@@ -2,7 +2,7 @@ server '45.32.166.156', port: 22, roles: [:web, :app, :db], primary: true
 
 set :user,            'redexadmin'
 set :application,     'Redex-Backend'
-set :branch,          'master'
+set :branch,          'deploy_approach_2'
 set :repo_url,        'git@github.com:MobileBrains/Redex-Backend.git'
 set :deploy_to,       "/home/#{fetch(:user)}/apps/#{fetch(:application)}"
 
@@ -89,11 +89,11 @@ namespace :db do
   task :configure do
     on roles(:app) do
 
-      set :database_username, "deploy"
-      set :database_password, "deploy"
+      set :database_username, "redexadmin"
+      set :database_password, "c4s420"
       #ask(:database_password, "deploy")
 
-      set :database_name, "melostomo"
+      set :database_name, "redex_db"
 
       db_config = <<-EOF
         default: &default
