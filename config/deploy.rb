@@ -30,7 +30,7 @@ namespace :deploy do
   desc "Gems Installation"
   task :bundle_gems do
     on roles(:app) do
-      execute "source ~/.rvm/scripts/rvm && cd #{fetch(:deploy_to)}current && bundle install --without development test"
+      execute "source ~/.rvm/scripts/rvm && cd #{fetch(:deploy_to)}/current && bundle install --without development test"
     end
   end
 
@@ -38,9 +38,9 @@ namespace :deploy do
   task :start do
     on roles(:app) do
       # execute "source ~/.rvm/scripts/rvm && cd #{fetch(:deploy_to)}current && RAILS_ENV='#{fetch(:rails_env)}' rake assets:clean"
-      execute "source ~/.rvm/scripts/rvm && cd #{fetch(:deploy_to)}current && RAILS_ENV='#{fetch(:rails_env)}' rake assets:precompile"
-      execute "source ~/.rvm/scripts/rvm && cd #{fetch(:deploy_to)}current && RAILS_ENV='#{fetch(:rails_env)}' bundle exec puma -d -b tcp://127.0.0.1:8080 -C ./config/puma.rb"
-      execute "source ~/.rvm/scripts/rvm && cd #{fetch(:deploy_to)}current && RAILS_ENV='#{fetch(:rails_env)}' bundle exec sidekiq -d -C ./config/sidekiq.yml"
+      execute "source ~/.rvm/scripts/rvm && cd #{fetch(:deploy_to)}/current && RAILS_ENV='#{fetch(:rails_env)}' rake assets:precompile"
+      execute "source ~/.rvm/scripts/rvm && cd #{fetch(:deploy_to)}/current && RAILS_ENV='#{fetch(:rails_env)}' bundle exec puma -d -b tcp://127.0.0.1:8080 -C ./config/puma.rb"
+      execute "source ~/.rvm/scripts/rvm && cd #{fetch(:deploy_to)}/current && RAILS_ENV='#{fetch(:rails_env)}' bundle exec sidekiq -d -C ./config/sidekiq.yml"
     end
   end
 
@@ -48,7 +48,7 @@ namespace :deploy do
   task :restart do
     on roles(:app) do
       execute "kill -QUIT `cat /tmp/puma.pid`"
-      execute "source ~/.rvm/scripts/rvm && cd #{fetch(:deploy_to)}current && RAILS_ENV='#{fetch(:rails_env)}' bundle exec puma -d -b tcp://127.0.0.1:8080 -C ./config/puma.rb"
+      execute "source ~/.rvm/scripts/rvm && cd #{fetch(:deploy_to)}/current && RAILS_ENV='#{fetch(:rails_env)}' bundle exec puma -d -b tcp://127.0.0.1:8080 -C ./config/puma.rb"
     end
   end
 
