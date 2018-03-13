@@ -38,9 +38,9 @@ namespace :deploy do
   task :start do
     on roles(:app) do
       # execute "source ~/.rvm/scripts/rvm && cd #{fetch(:deploy_to)}current && RAILS_ENV='#{fetch(:rails_env)}' rake assets:clean"
-      execute "source ~/.rvm/scripts/rvm && cd #{fetch(:deploy_to)}/current && RAILS_ENV='#{fetch(:rails_env)}' rake assets:precompile"
-      execute "source ~/.rvm/scripts/rvm && cd #{fetch(:deploy_to)}/current && RAILS_ENV='#{fetch(:rails_env)}' bundle exec puma -d -b tcp://127.0.0.1:8080 -C ./config/puma.rb"
-      execute "source ~/.rvm/scripts/rvm && cd #{fetch(:deploy_to)}/current && RAILS_ENV='#{fetch(:rails_env)}' bundle exec sidekiq -d -C ./config/sidekiq.yml"
+      execute "source ~/.rvm/scripts/rvm && cd #{fetch(:deploy_to)}current && RAILS_ENV='#{fetch(:rails_env)}' rake assets:precompile"
+      execute "source ~/.rvm/scripts/rvm && cd #{fetch(:deploy_to)}current && RAILS_ENV='#{fetch(:rails_env)}' bundle exec puma -d -b tcp://127.0.0.1:8080 -C ./config/puma.rb"
+      execute "source ~/.rvm/scripts/rvm && cd #{fetch(:deploy_to)}current && RAILS_ENV='#{fetch(:rails_env)}' bundle exec sidekiq -d -C ./config/sidekiq.yml"
     end
   end
 
@@ -76,7 +76,7 @@ namespace :figaro do
   desc "Symlink application.yml to the release path"
   task :symlink do
     on roles(:app) do
-      execute "ln -sf #{shared_path}/application.yml #{fetch(:deploy_to)}current/config/application.yml"
+      execute "ln -sf #{shared_path}/application.yml #{fetch(:deploy_to)}/current/config/application.yml"
     end
   end
 end
