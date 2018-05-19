@@ -1,0 +1,2 @@
+class ManagementReport < ApplicationRecord
+end
