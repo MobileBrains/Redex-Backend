@@ -15,17 +15,19 @@
 #  last_sign_in_ip         :inet
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
-#  name                    :string
+#  name                    :string           not null
 #  latitude                :float
 #  longitude               :float
 #  location                :string
 #  mail_delivery_office_id :integer
+#  client_id               :integer
 #
 
 class User < ApplicationRecord
   has_one :mail_delivery_company
-  belongs_to :mail_delivery_office
+  belongs_to :mail_delivery_office, optional: true
   belongs_to :client, optional: true
+  has_many :management_reports
 
   has_many :devolutions
   after_create :assign_default_role

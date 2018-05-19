@@ -49,5 +49,6 @@ RailsAdmin.config do |config|
     DeliveryOrder
     CourriersLocation
     Client
+    ManagementReport
   ]
 end
