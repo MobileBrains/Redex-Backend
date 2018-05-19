@@ -25,6 +25,7 @@
 class User < ApplicationRecord
   has_one :mail_delivery_company
   belongs_to :mail_delivery_office
+  belongs_to :client, optional: true
 
   has_many :devolutions
   after_create :assign_default_role
