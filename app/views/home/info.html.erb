@@ -223,7 +223,7 @@
 </div>
 <script type="text/javascript">
     $(document).ready(function() {
-        $('#pendent_orders').DataTable({
+        var pendentsDataTable = $('#pendent_orders').DataTable({
           "pageLength": 50,
           "language":{
             "sProcessing":     "Procesando...",
@@ -250,7 +250,8 @@
             }
           }
         });
-        $('#delivered_orders').DataTable({
+
+        var deliveredDataTable = $('#delivered_orders').DataTable({
           "pageLength": 50,
           "language":{
             "sProcessing":     "Procesando...",
@@ -277,7 +278,7 @@
             }
           }
         });
-        $('#devolutions').DataTable({
+        var devolutionsDataTable = $('#devolutions').DataTable({
           "pageLength": 50,
           "language":{
             "sProcessing":     "Procesando...",
@@ -303,6 +304,16 @@
                 "sSortDescending": ": Activar para ordenar la columna de manera descendente"
             }
           }
+        });
+
+        document.addEventListener("turbolinks:before-cache", function() {
+          pendentsDataTable.destroy();
+        });
+        document.addEventListener("turbolinks:before-cache", function() {
+          deliveredDataTable.destroy();
+        });
+        document.addEventListener("turbolinks:before-cache", function() {
+          devolutionsDataTable.destroy();
         });
 
         $('.notImage').click(false);
