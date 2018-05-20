@@ -375,7 +375,7 @@ DEPENDENCIES
   jquery-rails
   jquery-turbolinks
   listen (~> 3.0.5)
-  momentjs-rails
+  momentjs-rails (>= 2.9.0)
   pg (~> 0.19)
   puma (~> 3.0)
   rack-cors
