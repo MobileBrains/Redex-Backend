@@ -388,6 +388,7 @@ DEPENDENCIES
   rest-client
   rolify
   sass-rails (~> 5.0)
+  sassc
   sidekiq
   spring
   spring-watcher-listen (~> 2.0.0)
