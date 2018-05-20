@@ -13,45 +13,12 @@
         <ul class="nav navbar-nav navbar-right ">
 
             <% if user_signed_in? %>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                    <i class="fa fa-map-marker" aria-hidden="true"></i>
-                    mapas<span class="caret"></span></a>
-                  <ul class="dropdown-menu">
-                    <% if user_signed_in? %>
-                        <li>
-                            <%= link_to maps_deliveryOrders_path do %>
-                                <i class="fa fa-envelope-o" aria-hidden="true"></i> Entregas
-                            <%end%>
-                        </li>
-                        <li>
-                            <%= link_to maps_courriersLocation_path do %>
-                                <i class="fa fa-male" aria-hidden="true"></i> Mensajeros
-                            <%end%>
-                        </li>
-                    <% end %>
-                  </ul>
-                </li>
                 <li>
-                    <%= link_to home_courriersLocations_path do %>
-                        <i class="fa fa-map-pin" aria-hidden="true"></i> Ubicaciones
+                    <%= link_to management_reports_path do %>
+                        <i class="fa fa-map-pin" aria-hidden="true"></i> Informes de Gestion
                     <%end%>
                 </li>
-                <li>
-                    <%= link_to home_devolutionsPage_path do %>
-                        <i class="fa fa-reply-all" aria-hidden="true"></i> Devoluciones
-                    <%end%>
-                </li>
-                <li>
-                    <%= link_to home_info_path do %>
-                        <i class="fa fa-bar-chart" aria-hidden="true"></i> Informe
-                    <%end%>
-                </li>
-                <li>
-                    <%= link_to delivery_orders_path do %>
-                        <i class="fa fa-envelope-o" aria-hidden="true"></i> Importar Entregas
-                    <%end%>
-                </li>
+
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                         <% if user_signed_in? %>
@@ -62,18 +29,6 @@
                     </a>
                     <ul class="dropdown-menu">
                         <% if user_signed_in? %>
-                            <li>
-                                <%= link_to edit_user_registration_path do %>
-                                   <i class="fa fa-user-plus" aria-hidden="true"></i> Editar Usuario
-                                <%end%>
-                            </li>
-                            <li>
-                                <%= link_to rails_admin_path do%>
-                                    <i class="fa fa-cog" aria-hidden="true"></i>  Administracion y configuraciones
-                                <%end%>
-
-                            </li>
-                            <hr>
                             <li>
                                 <%= link_to destroy_user_session_path, :method => :delete do %>
                                     <i class="fa fa-sign-out" aria-hidden="true"></i> Cerrar Sesion
