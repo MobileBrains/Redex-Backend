@@ -223,7 +223,7 @@
 </div>
 <script type="text/javascript">
     $(document).ready(function() {
-        var pendentsDataTable = $('#pendent_orders').DataTable({
+        $('#pendent_orders').DataTable({
           "pageLength": 50,
           "language":{
             "sProcessing":     "Procesando...",
@@ -250,10 +250,7 @@
             }
           }
         });
-        document.addEventListener("turbolinks:before-cache", function() {
-          pendentsDataTable.destroy();
-        });
-        var deliveredDataTable = $('#delivered_orders').DataTable({
+        $('#delivered_orders').DataTable({
           "pageLength": 50,
           "language":{
             "sProcessing":     "Procesando...",
@@ -280,10 +277,7 @@
             }
           }
         });
-        document.addEventListener("turbolinks:before-cache", function() {
-          deliveredDataTable.destroy();
-        });
-        var devolutionsDataTable = $('#devolutions').DataTable({
+        $('#devolutions').DataTable({
           "pageLength": 50,
           "language":{
             "sProcessing":     "Procesando...",
@@ -310,9 +304,7 @@
             }
           }
         });
-        document.addEventListener("turbolinks:before-cache", function() {
-          devolutionsDataTable.destroy();
-        });
+
         $('.notImage').click(false);
 
 
