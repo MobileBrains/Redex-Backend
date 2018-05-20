@@ -48,5 +48,7 @@ RailsAdmin.config do |config|
     Devolution
     DeliveryOrder
     CourriersLocation
+    Client
+    ManagementReport
   ]
 end

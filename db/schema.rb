@@ -10,10 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170303014524) do
+ActiveRecord::Schema.define(version: 20180519225743) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "clients", force: :cascade do |t|
+    t.string   "name"
+    t.string   "phone"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "courriers_locations", force: :cascade do |t|
     t.float    "latitude"
@@ -86,6 +93,16 @@ ActiveRecord::Schema.define(version: 20170303014524) do
     t.integer  "mail_delivery_company_id"
   end
 
+  create_table "management_reports", force: :cascade do |t|
+    t.string   "name"
+    t.string   "link"
+    t.string   "description"
+    t.integer  "user_id"
+    t.integer  "client_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
   create_table "oauth_access_grants", force: :cascade do |t|
     t.integer  "resource_owner_id", null: false
     t.integer  "application_id",    null: false
@@ -152,6 +169,7 @@ ActiveRecord::Schema.define(version: 20170303014524) do
     t.float    "longitude"
     t.string   "location"
     t.integer  "mail_delivery_office_id"
+    t.integer  "client_id"
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end

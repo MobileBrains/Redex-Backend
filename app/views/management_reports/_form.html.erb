@@ -1,0 +1,40 @@
+<%= form_for @management_report, html: { class: 'form-horizontal' } do |f| %>
+  <div class="form-group">
+    <%= f.label :name, class: 'control-label col-md-2' %>
+    <div class="col-md-10">
+      <%= f.text_field :name, class: 'text_field form-control' %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :link, class: 'control-label col-md-2' %>
+    <div class="col-md-10">
+      <%= f.text_field :link, class: 'text_field form-control' %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :description, class: 'control-label col-md-2' %>
+    <div class="col-md-10">
+      <%= f.text_field :description, class: 'text_field form-control' %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :user_id, class: 'control-label col-md-2' %>
+    <div class="col-md-10">
+      <%= f.text_field :user_id, class: 'text_field form-control' %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :client_id, class: 'control-label col-md-2' %>
+    <div class="col-md-10">
+      <%= f.text_field :client_id, class: 'text_field form-control' %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class='col-md-offset-2 col-md-10'>
+      <%= f.submit nil, class: 'btn btn-primary' %>
+      <%= link_to t('.cancel', default: t("helpers.links.cancel")),
+                  management_reports_path, class: 'btn btn-default' %>
+    </div>
+  </div>
+<% end %>

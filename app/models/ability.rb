@@ -10,6 +10,8 @@ class Ability
       can :dashboard             # allow access to dashboard
       can [:read, :create, :update], MailDeliveryCompany
       can :manage, :all
+    elsif user.has_role? :Auditor
+      can [:read], ManagementReport
     else
       can :read, :all
     end

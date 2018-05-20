@@ -1,0 +1,29 @@
+# == Schema Information
+#
+# Table name: management_reports
+#
+#  id          :integer          not null, primary key
+#  name        :string
+#  link        :string
+#  description :string
+#  user_id     :integer
+#  client_id   :integer
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#
+
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  link: MyString
+  description: MyString
+  user_id: 1
+  client_id: 1
+
+two:
+  name: MyString
+  link: MyString
+  description: MyString
+  user_id: 1
+  client_id: 1

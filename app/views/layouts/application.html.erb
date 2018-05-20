@@ -22,7 +22,15 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/locale/es.js"></script>
 </head>
 <body>
-    <%= render 'partials/navbar' %>
+    <% if user_signed_in? %>
+        <% if current_user.has_any_role? :Auditor %>
+            <%= render 'partials/clientNavbar' %>
+        <% else %>
+            <%= render 'partials/navbar' %>
+        <%end%>
+    <% else %>
+        <%= render 'partials/navbar' %>
+    <%end%>
 
     <div id="wrap">
         <% unless flash.empty? %>
