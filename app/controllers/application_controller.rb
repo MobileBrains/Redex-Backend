@@ -14,6 +14,16 @@ class ApplicationController < ActionController::Base
 
   end
 
+  def after_sign_in_path_for(resource)
+    if resource.is_a?(User)
+      if resource.has_role? :Auditor
+        management_reports_path
+      else
+      root_path
+      end
+    end
+  end
+
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to main_app.root_url, :alert => exception.message
   end
