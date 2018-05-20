@@ -1,4 +1,4 @@
-server '45.32.166.156', port: 22, roles: [:web, :app, :db], primary: true
+server '149.28.110.13', port: 22, roles: [:web, :app, :db], primary: true
 
 # Change these
 set :repo_url,        'git@github.com:MobileBrains/Redex-Backend.git'
