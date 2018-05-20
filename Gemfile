@@ -71,7 +71,6 @@ gem 'active_importer'
 
 # Font awasome Icons
 gem "font-awesome-rails"
-gem 'font-awesome-sass'
 
 gem 'underscore-rails'
 
