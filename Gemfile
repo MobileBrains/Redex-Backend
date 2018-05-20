@@ -14,13 +14,6 @@ gem 'puma', '~> 3.0'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 
-gem 'bootstrap-sass-extras'
-
-gem "rake"
-
-gem 'sassc'
-
-
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 
@@ -53,7 +46,7 @@ gem 'jquery-turbolinks'
 gem 'bootstrap-sass', '~> 3.2.0'
 gem 'autoprefixer-rails'
 
-gem 'momentjs-rails', '>= 2.9.0'
+gem 'momentjs-rails'
 gem 'bootstrap3-datetimepicker-rails', '~> 4.14.30'
 
 #Manage the application.yml file
