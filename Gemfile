@@ -72,6 +72,7 @@ gem "font-awesome-rails"
 gem 'font-awesome-sass'
 
 gem 'underscore-rails'
+
 #Web Dashboard Administration
 gem 'rails_admin', '~> 1.0'
 
@@ -85,9 +86,8 @@ gem 'gmaps4rails'
 gem 'annotate'
 
 # API authentication
- gem 'doorkeeper'
- gem 'rack-oauth2'
-
+gem 'doorkeeper'
+gem 'rack-oauth2'
 
 # API
 group :api do
@@ -97,21 +97,12 @@ group :api do
   gem 'rest-client' # Test API
 end
 
-
 group :development do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
 
-  gem 'capistrano',         require: false
-  gem 'capistrano-rvm',     require: false
-  gem 'capistrano-rails',   require: false
-  gem 'capistrano-bundler', require: false
-  gem 'capistrano3-puma',   require: false
-  gem 'capistrano-figaro-yml', '~> 1.0.2'
+  gem 'capistrano', '~> 3.10', '>= 3.10.1'
 end
-
-# Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
 
 group :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
