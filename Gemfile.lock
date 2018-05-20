@@ -59,8 +59,6 @@ GEM
     bindex (0.5.0)
     bootstrap-sass (3.2.0.2)
       sass (~> 3.2)
-    bootstrap-sass-extras (0.0.7)
-      rails (>= 3.1.0)
     bootstrap3-datetimepicker-rails (4.14.30)
       momentjs-rails (>= 2.8.1)
     builder (3.2.3)
@@ -353,7 +351,6 @@ DEPENDENCIES
   annotate
   autoprefixer-rails
   bootstrap-sass (~> 3.2.0)
-  bootstrap-sass-extras
   bootstrap3-datetimepicker-rails (~> 4.14.30)
   byebug
   cancancan
@@ -378,18 +375,16 @@ DEPENDENCIES
   jquery-rails
   jquery-turbolinks
   listen (~> 3.0.5)
-  momentjs-rails (>= 2.9.0)
+  momentjs-rails
   pg (~> 0.19)
   puma (~> 3.0)
   rack-cors
   rack-oauth2
   rails (~> 5.0.0, >= 5.0.0.1)
   rails_admin (~> 1.0)
-  rake
   rest-client
   rolify
   sass-rails (~> 5.0)
-  sassc
   sidekiq
   spring
   spring-watcher-listen (~> 2.0.0)
