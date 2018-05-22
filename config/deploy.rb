@@ -22,8 +22,7 @@ set :ssh_options,     { forward_agent: true, user: fetch(:user), keys: %w(~/.ssh
 set :puma_preload_app, true
 set :puma_worker_timeout, nil
 set :puma_init_active_record, true  # Change to false when not using ActiveRecord
-set :rbenv_map_bins, %w{rake gem bundle ruby rails sidekiq sidekiqctl}
-append :rvm1_map_bins, 'rake', 'gem', 'bundle', 'ruby', 'puma', 'pumactl'
+
 
 ## Defaults:
 # set :scm,           :git
