@@ -91,8 +91,6 @@ gem 'annotate'
 gem 'doorkeeper'
 gem 'rack-oauth2'
 
-gem 'listen', '~> 3.0.5'
-
 # API
 group :api do
   gem 'grape'
@@ -115,7 +113,7 @@ end
 
 group :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug', platform: :mri
+  #gem 'byebug', platform: :mri
 end
 
 group :development do
