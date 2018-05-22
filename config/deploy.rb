@@ -22,6 +22,7 @@ set :ssh_options,     { forward_agent: true, user: fetch(:user), keys: %w(~/.ssh
 set :puma_preload_app, true
 set :puma_worker_timeout, nil
 set :puma_init_active_record, true  # Change to false when not using ActiveRecord
+set :rbenv_map_bins, %w{rake gem bundle ruby rails sidekiq sidekiqctl}
 #set :rbenv_map_bins, %w{rake gem bundle ruby rails sidekiq sidekiqctl}
 #set :rbenv_map_bins, fetch(:rbenv_map_bins).to_a.concat(%w(bundle exec sidekiq -d -C ./config/sidekiq.yml))
 
