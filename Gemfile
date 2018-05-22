@@ -91,6 +91,8 @@ gem 'annotate'
 gem 'doorkeeper'
 gem 'rack-oauth2'
 
+gem 'listen', '~> 3.0.5'
+
 # API
 group :api do
   gem 'grape'
