@@ -24,7 +24,7 @@ set :puma_worker_timeout, nil
 set :puma_init_active_record, true  # Change to false when not using ActiveRecord
 set :rbenv_map_bins, %w{rake gem bundle ruby rails sidekiq sidekiqctl}
 append :rvm1_map_bins, 'rake', 'gem', 'bundle', 'ruby', 'puma', 'pumactl'
-load 'lib/deploy/seed'
+load '/lib/deploy/seed'
 
 ## Defaults:
 # set :scm,           :git
