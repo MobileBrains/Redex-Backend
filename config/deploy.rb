@@ -24,7 +24,6 @@ set :puma_worker_timeout, nil
 set :puma_init_active_record, true  # Change to false when not using ActiveRecord
 set :rbenv_map_bins, %w{rake gem bundle ruby rails sidekiq sidekiqctl}
 append :rvm1_map_bins, 'rake', 'gem', 'bundle', 'ruby', 'puma', 'pumactl'
-load '/lib/deploy/seed'
 
 ## Defaults:
 # set :scm,           :git
@@ -66,7 +65,7 @@ namespace :deploy do
     on roles(:app) do
       before 'deploy:restart', 'puma:start'
       invoke 'deploy'
-      #execute "source ~/.rvm/scripts/rvm && cd #{fetch(:deploy_to)}/current && RAILS_ENV='#{fetch(:rails_env)}' bundle exec sidekiq -d -C ./config/sidekiq.yml"
+      execute "source ~/.rvm/scripts/rvm && cd #{fetch(:deploy_to)}/current && RAILS_ENV='#{fetch(:rails_env)}' bundle exec sidekiq -d -C ./config/sidekiq.yml"
     end
   end
 
