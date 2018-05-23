@@ -27,8 +27,7 @@ set :rbenv_map_bins, %w{rake gem bundle ruby rails sidekiq sidekiqctl}
 #set :rbenv_map_bins, fetch(:rbenv_map_bins).to_a.concat(%w(bundle exec sidekiq -d -C ./config/sidekiq.yml))
 set :pty,  false
 
-SSHKit.config.command_map[:sidekiq] = "bundle exec sidekiq -d -C ./config/sidekiq.yml"
-SSHKit.config.command_map[:sidekiqctl] = "bundle exec sidekiqctl"
+
 
 ## Defaults:
 # set :scm,           :git
@@ -70,7 +69,7 @@ namespace :deploy do
     on roles(:app) do
       before 'deploy:restart', 'puma:start'
       invoke 'deploy'
-      execute "cd #{fetch(:deploy_to)}/current && RAILS_ENV=#{fetch(:rails_env)} #{fetch(:sidekiq)} "
+      execute "cd #{fetch(:deploy_to)}/current && RAILS_ENV='#{fetch(:rails_env)}' bundle exec sidekiq -d -C ./config/sidekiq.yml"
 
     end
   end
