@@ -72,8 +72,9 @@ namespace :deploy do
       #before 'deploy:restart', 'puma:start'
 
       invoke 'deploy'
-      execute 'foreman start'
+      #execute 'foreman start'
        execute "source ~/.rvm/scripts/rvm && cd #{fetch(:deploy_to)}/current && RAILS_ENV='#{fetch(:rails_env)}' bundle exec sidekiq -d -C ./config/sidekiq.yml"
+       execute "source ~/.rvm/scripts/rvm && cd #{fetch(:deploy_to)}/current && RAILS_ENV='#{fetch(:rails_env)}' foreman start"
       #execute "cd #{fetch(:deploy_to)}/current && RAILS_ENV=#{fetch(:rails_env)} #{fetch(:sidekiq)}"
 
     end
