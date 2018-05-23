@@ -69,9 +69,10 @@ namespace :deploy do
   desc 'Initial Deploy'
   task :initial do
     on roles(:app) do
-      before 'deploy:restart', execute "foreman start"
+      before 'deploy:restart', 'puma:start'
 
       invoke 'deploy'
+      execute 'foreman start'
        execute "source ~/.rvm/scripts/rvm && cd #{fetch(:deploy_to)}/current && RAILS_ENV='#{fetch(:rails_env)}' bundle exec sidekiq -d -C ./config/sidekiq.yml"
       #execute "cd #{fetch(:deploy_to)}/current && RAILS_ENV=#{fetch(:rails_env)} #{fetch(:sidekiq)}"
 
