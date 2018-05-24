@@ -66,7 +66,7 @@ namespace :deploy do
     on roles(:app) do
       before 'deploy:restart', 'puma:start'
       invoke 'deploy'
-      execute "cd #{fetch(:deploy_to)}/current && RAILS_ENV='#{fetch(:rails_env)}' foreman start"
+      execute "cd #{fetch(:deploy_to)}/current && foreman start"
 
     end
   end

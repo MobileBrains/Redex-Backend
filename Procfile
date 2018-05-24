@@ -1,2 +1,2 @@
-web: puma
+web: foreman
 worker: bundle exec sidekiq -C config/sidekiq.yml
