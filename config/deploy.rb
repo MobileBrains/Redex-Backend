@@ -23,8 +23,6 @@ set :puma_preload_app, true
 set :puma_worker_timeout, nil
 set :puma_init_active_record, true  # Change to false when not using ActiveRecord
 set :rbenv_map_bins, %w{rake gem bundle ruby rails sidekiq sidekiqctl}
-set :sidekiq, "bundle exec sidekiq -d -C ./config/sidekiq.yml"
-
 #set :rbenv_map_bins, %w{rake gem bundle ruby rails sidekiq sidekiqctl}
 #set :rbenv_map_bins, fetch(:rbenv_map_bins).to_a.concat(%w(bundle exec sidekiq -d -C ./config/sidekiq.yml))
 set :pty,  false
@@ -58,8 +56,8 @@ namespace :deploy do
   desc "Make sure local git is in sync with remote."
   task :check_revision do
     on roles(:app) do
-      unless `git rev-parse HEAD` == `git rev-parse origin/capf`
-        puts "WARNING: HEAD is not the same as origin/capf"
+      unless `git rev-parse HEAD` == `git rev-parse origin/master`
+        puts "WARNING: HEAD is not the same as origin/master"
         puts "Run `git push` to sync changes."
         exit
       end
@@ -71,7 +69,7 @@ namespace :deploy do
     on roles(:app) do
       before 'deploy:restart', 'puma:start'
       invoke 'deploy'
-      execute "cd #{fetch(:deploy_to)}/current && RAILS_ENV=  '#{fetch(:rails_env)}' #{fetch(:sidekiq)}"
+      execute "cd #{fetch(:deploy_to)}/current && RAILS_ENV='#{fetch(:rails_env)}' bundle exec foreman start"
 
     end
   end
