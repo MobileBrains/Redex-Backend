@@ -1,88 +1,89 @@
 server '149.28.104.34', port: 22, roles: [:web, :app, :db], primary: true
 
+# Change these
+set :repo_url,        'git@github.com:MobileBrains/Redex-Backend.git'
+set :application,     'Redex-Backend'
+set :user,            'redexadmin'
+set :puma_threads,    [4, 16]
+set :puma_workers,    0
 
-# TODO: change to your app name
-set :application, "Redex-Backend"
+# Don't change these unless you know what you're doing
+set :pty,             false
+set :use_sudo,        false
+set :stage,           :production
+set :deploy_via,      :remote_cache
+set :deploy_to,       "/home/#{fetch(:user)}/apps/#{fetch(:application)}"
+set :puma_bind,       "unix://#{shared_path}/tmp/sockets/#{fetch(:application)}-puma.sock"
+set :puma_state,      "#{shared_path}/tmp/pids/puma.state"
+set :puma_pid,        "#{shared_path}/tmp/pids/puma.pid"
+set :puma_access_log, "#{release_path}/log/puma.error.log"
+set :puma_error_log,  "#{release_path}/log/puma.access.log"
+set :ssh_options,     { forward_agent: true, user: fetch(:user), keys: %w(~/.ssh/id_rsa.pub) }
+set :puma_preload_app, true
+set :puma_worker_timeout, nil
+set :puma_init_active_record, true  # Change to false when not using ActiveRecord
+set :rbenv_map_bins, %w{rake gem bundle ruby rails sidekiq sidekiqctl}
+#set :rbenv_map_bins, %w{rake gem bundle ruby rails sidekiq sidekiqctl}
+#set :rbenv_map_bins, fetch(:rbenv_map_bins).to_a.concat(%w(bundle exec sidekiq -d -C ./config/sidekiq.yml))
 
-set :stages, %w(production staging)
-set :default_stage, "staging"
+## Defaults:
+# set :scm,           :git
+# set :branch,        :master
+# set :format,        :pretty
+# set :log_level,     :debug
+# set :keep_releases, 5
 
-require 'capistrano/ext/multistage'
-require 'bundler/capistrano'
+## Linked Files & Directories (Default None):
+# set :linked_files, %w{config/database.yml}
+# set :linked_dirs,  %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
 
-default_run_options[:pty] = true
-
-# TODO: change to your user name and group name on the server
-set :user, -> { "redexadmin" }
-set :group, -> { "sudo" }
-
-set :use_sudo, true
-set :scm, :git
-
-# TODO: specify your repository and where you want to deploy to
-set :repository, "git@github.com:MobileBrains/Redex-Backend.git"
-set :deploy_to, -> { "/home/#{fetch(:user)}/apps/#{fetch(:application)}" }
-
-set :deploy_via, :remote_cache
-set :deploy_env, -> { "#{stage}" }
-set :rails_env, -> { "#{stage}" }
-
-set :default_environment, {
-  'rvmsudo_secure_path' => 1
-}
-
-# TODO: change to your ruby version and gemset name
-set :rvm_ruby_string, -> { "2.5.1@redex" }
-
-before 'deploy', 'rvm:install_rvm'
-before 'deploy', 'rvm:install_ruby'
-
-require "rvm/capistrano"
-
-namespace :rvm do
-  desc 'Trust rvmrc file'
-  task :trust_rvmrc do
-    run "rvm rvmrc trust #{current_release}"
-    run "rvm rvmrc trust #{release_path}"
+namespace :puma do
+  desc 'Create Directories for Puma Pids and Socket'
+  task :make_dirs do
+    on roles(:app) do
+      execute "mkdir #{shared_path}/tmp/sockets -p"
+      execute "mkdir #{shared_path}/tmp/pids -p"
+    end
   end
-end
 
-after "deploy:update_code", "rvm:trust_rvmrc"
+  before :start, :make_dirs
+end
 
 namespace :deploy do
-  desc "Symlink shared configs and folders on each release."
-  task :symlink_shared do
-    run "ln -nfs #{shared_path}/config/database.yml #{release_path}/config/database.yml"
+  desc "Make sure local git is in sync with remote."
+  task :check_revision do
+    on roles(:app) do
+      unless `git rev-parse HEAD` == `git rev-parse origin/master`
+        puts "WARNING: HEAD is not the same as origin/master"
+        puts "Run `git push` to sync changes."
+        exit
+      end
+    end
   end
+
+  desc 'Initial Deploy'
+  task :initial do
+    on roles(:app) do
+      before 'deploy:restart', 'puma:start'
+      invoke 'deploy'
+      execute "cd #{fetch(:deploy_to)}/current && RAILS_ENV='#{fetch(:rails_env)}' bundle exec sidekiq -d -C ./config/sidekiq.yml"
+
+    end
+  end
+
+  desc 'Restart application'
+  task :restart do
+    on roles(:app), in: :sequence, wait: 5 do
+      invoke 'puma:restart'
+    end
+  end
+
+  before :starting,     :check_revision
+  after  :finishing,    :compile_assets
+  after  :finishing,    :cleanup
+  after  :finishing,    :restart
 end
 
-after 'deploy:update_code', 'deploy:symlink_shared'
-
-# TODO: get rid of #{sudo} whoami hack if your sudo works without password. You need this hack if you've been asked for one.
-namespace :foreman do
-  desc "Export the Procfile to Ubuntu's upstart scripts"
-  task :export, :roles => :app do
-    run "#{sudo} whoami && cd #{current_path} && rvmsudo bundle exec foreman export upstart /etc/init -a #{application} -f ./Procfile.#{stage} -u #{user} -l #{release_path}/log"
-  end
-
-  desc "Start the application services"
-  task :start, :roles => :app do
-    run "#{sudo} whoami && rvmsudo start #{application}"
-  end
-
-  desc "Stop the application services"
-  task :stop, :roles => :app do
-    run "#{sudo} whoami && rvmsudo stop #{application}"
-  end
-
-  desc "Restart the application services"
-  task :restart, :roles => :app do
-    run "#{sudo} whoami && sudo start #{application} || sudo restart #{application}"
-  end
-end
-
-after "deploy:update", "foreman:export"
-after "deploy:update", "foreman:restart"
-
-load 'deploy/assets'
-
+# ps aux | grep puma    # Get puma pid
+# kill -s SIGUSR2 pid   # Restart puma
+# kill -s SIGTERM pid   # Stop puma
