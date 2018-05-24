@@ -25,9 +25,6 @@ set :puma_init_active_record, true  # Change to false when not using ActiveRecor
 set :rbenv_map_bins, %w{rake gem bundle ruby rails sidekiq sidekiqctl}
 #set :rbenv_map_bins, %w{rake gem bundle ruby rails sidekiq sidekiqctl}
 #set :rbenv_map_bins, fetch(:rbenv_map_bins).to_a.concat(%w(bundle exec sidekiq -d -C ./config/sidekiq.yml))
-set :pty,  false
-
-
 
 ## Defaults:
 # set :scm,           :git
@@ -69,7 +66,7 @@ namespace :deploy do
     on roles(:app) do
       before 'deploy:restart', 'puma:start'
       invoke 'deploy'
-      execute "cd #{fetch(:deploy_to)}/current && RAILS_ENV='#{fetch(:rails_env)}' foreman start"
+      execute "cd #{fetch(:deploy_to)}/current && RAILS_ENV='#{fetch(:rails_env)}' bundle exec sidekiq -d -C ./config/sidekiq.yml"
 
     end
   end
