@@ -65,9 +65,8 @@ namespace :deploy do
   task :initial do
     on roles(:app) do
       before 'deploy:restart', 'puma:start'
+      execute "cd #{fetch(:deploy_to)}/current && RAILS_ENV='#{fetch(:rails_env)}' sidekiq -d -C ./config/sidekiq.yml"
       invoke 'deploy'
-
-
     end
   end
 
