@@ -38,9 +38,6 @@ gem 'jbuilder', '~> 2.5'
 # gem 'redis', '~> 3.0'
 gem 'sidekiq'
 
-# Manage multiple threads in app start
-gem 'foreman'
-
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 gem 'jquery-turbolinks'
@@ -90,9 +87,6 @@ gem 'annotate'
 # API authentication
 gem 'doorkeeper'
 gem 'rack-oauth2'
-
-gem 'foreman', require: false
-gem 'rvm-capistrano', require: false
 # API
 group :api do
   gem 'grape'
