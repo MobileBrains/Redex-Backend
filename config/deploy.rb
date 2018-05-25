@@ -22,14 +22,9 @@ set :ssh_options,     { forward_agent: true, user: fetch(:user), keys: %w(~/.ssh
 set :puma_preload_app, true
 set :puma_worker_timeout, nil
 set :puma_init_active_record, true  # Change to false when not using ActiveRecord
-set :rbenv_map_bins, %w{rake gem bundle ruby rails sidekiq sidekiqctl foreman}
-set :sidekiq, "bundle exec sidekiq -d -C ./config/sidekiq.yml"
-
+set :rbenv_map_bins, %w{rake gem bundle ruby rails sidekiq sidekiqctl}
 #set :rbenv_map_bins, %w{rake gem bundle ruby rails sidekiq sidekiqctl}
 #set :rbenv_map_bins, fetch(:rbenv_map_bins).to_a.concat(%w(bundle exec sidekiq -d -C ./config/sidekiq.yml))
-set :pty,  false
-
-
 
 ## Defaults:
 # set :scm,           :git
@@ -58,8 +53,8 @@ namespace :deploy do
   desc "Make sure local git is in sync with remote."
   task :check_revision do
     on roles(:app) do
-      unless `git rev-parse HEAD` == `git rev-parse origin/master`
-        puts "WARNING: HEAD is not the same as origin/master"
+      unless `git rev-parse HEAD` == `git rev-parse origin/capf`
+        puts "WARNING: HEAD is not the same as origin/capf"
         puts "Run `git push` to sync changes."
         exit
       end
@@ -69,13 +64,9 @@ namespace :deploy do
   desc 'Initial Deploy'
   task :initial do
     on roles(:app) do
-      #before 'deploy:restart', 'puma:start'
-
+      before 'deploy:restart', 'puma:start'
       invoke 'deploy'
-      #execute 'foreman start'
-       execute "source ~/.rvm/scripts/rvm && cd #{fetch(:deploy_to)}/current && RAILS_ENV='#{fetch(:rails_env)}' bundle exec sidekiq -d -C ./config/sidekiq.yml"
-       execute "source ~/.rvm/scripts/rvm && cd #{fetch(:deploy_to)}/current && RAILS_ENV='#{fetch(:rails_env)}' foreman start"
-      #execute "cd #{fetch(:deploy_to)}/current && RAILS_ENV=#{fetch(:rails_env)} #{fetch(:sidekiq)}"
+
 
     end
   end
@@ -96,3 +87,4 @@ end
 # ps aux | grep puma    # Get puma pid
 # kill -s SIGUSR2 pid   # Restart puma
 # kill -s SIGTERM pid   # Stop puma
+
