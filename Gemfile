@@ -89,7 +89,7 @@ gem 'doorkeeper'
 gem 'rack-oauth2'
 
 gem 'foreman', require: false
-gem 'rvm-capistrano', require: false
+
 # API
 group :api do
   gem 'grape'
