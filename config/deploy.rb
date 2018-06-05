@@ -19,6 +19,21 @@ set :rvm_type,        :user
 set :rvm_ruby_string, '2.5.1'
 set :rails_env,       'production'
 
+# Don't change these unless you know what you're doing
+
+
+
+
+set :puma_bind,       "unix://#{shared_path}/tmp/sockets/#{fetch(:application)}-puma.sock"
+set :puma_state,      "#{shared_path}/tmp/pids/puma.state"
+set :puma_pid,        "#{shared_path}/tmp/pids/puma.pid"
+set :puma_access_log, "#{release_path}/log/puma.error.log"
+set :puma_error_log,  "#{release_path}/log/puma.access.log"
+#set :ssh_options,     { forward_agent: true, user: fetch(:user), keys: %w(~/.ssh/id_rsa.pub) }
+set :puma_preload_app, true
+set :puma_worker_timeout, nil
+set :puma_init_active_record, true  # Change to false when not using ActiveRecord
+
 namespace :deploy do
   desc "Init Setup for the rvm gemsets"
   task :initializer do
@@ -30,7 +45,7 @@ namespace :deploy do
   desc "Gems Installation"
   task :bundle_gems do
     on roles(:app) do
-      execute "source ~/.rvm/scripts/rvm && cd #{fetch(:deploy_to)}/current && bundle install --without development test"
+      execute "source ~/.rvm/scripts/rvm && cd #{fetch(:deploy_to)}/current && bundle exec bundle install --without development test"
     end
   end
 
@@ -38,7 +53,7 @@ namespace :deploy do
   task :start do
     on roles(:app) do
       # execute "source ~/.rvm/scripts/rvm && cd #{fetch(:deploy_to)}current && RAILS_ENV='#{fetch(:rails_env)}' rake assets:clean"
-      execute "source ~/.rvm/scripts/rvm && cd #{fetch(:deploy_to)}/current && RAILS_ENV='#{fetch(:rails_env)}' rake assets:precompile"
+      execute "source ~/.rvm/scripts/rvm && cd #{fetch(:deploy_to)}/current && RAILS_ENV='#{fetch(:rails_env)}' bundle exec rake assets:precompile"
       execute "source ~/.rvm/scripts/rvm && cd #{fetch(:deploy_to)}/current && RAILS_ENV='#{fetch(:rails_env)}' bundle exec puma -d -b tcp://127.0.0.1:80 -C ./config/puma.rb"
       execute "source ~/.rvm/scripts/rvm && cd #{fetch(:deploy_to)}/current && RAILS_ENV='#{fetch(:rails_env)}' bundle exec sidekiq -d -C ./config/sidekiq.yml"
       #execute "source ~/.rvm/scripts/rvm && cd #{fetch(:deploy_to)}/current && RAILS_ENV='#{fetch(:rails_env)}' bundle exec foreman start"
