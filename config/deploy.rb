@@ -49,16 +49,15 @@ namespace :puma do
   before :start, :make_dirs
 end
 
-namespace :foreman do
+namespace :sidekiq do
   desc "Start Server"
    task :start do
      on roles(:app) do
        # execute "source ~/.rvm/scripts/rvm && cd #{fetch(:deploy_to)}current && RAILS_ENV='#{fetch(:rails_env)}' rake assets:clean"
        #execute "source ~/.rvm/scripts/rvm && cd #{fetch(:deploy_to)}/current && RAILS_ENV='#{fetch(:rails_env)}' rake assets:precompile"
-       #execute "source ~/.rvm/scripts/rvm && cd #{fetch(:deploy_to)}/current && RAILS_ENV='#{fetch(:rails_env)}' bundle exec sidekiq -d -C ./config/sidekiq.yml"
-       execute "source ~/.rvm/scripts/rvm && cd #{fetch(:deploy_to)}/current && RAILS_ENV='#{fetch(:rails_env)}' bundle exec foreman start"
        #execute "source ~/.rvm/scripts/rvm && cd #{fetch(:deploy_to)}/current && RAILS_ENV='#{fetch(:rails_env)}' bundle exec puma -d -b tcp://127.0.0.1:80 -C ./config/puma.rb"
-
+      execute "source ~/.rvm/scripts/rvm && cd #{fetch(:deploy_to)}/current && RAILS_ENV='#{fetch(:rails_env)}' bundle exec sidekiq -d -C ./config/sidekiq.yml"
+       #execute "source ~/.rvm/scripts/rvm && cd #{fetch(:deploy_to)}/current && RAILS_ENV='#{fetch(:rails_env)}' bundle exec foreman start"
      end
    end
 end
@@ -78,7 +77,8 @@ namespace :deploy do
   desc 'Initial Deploy'
   task :initial do
     on roles(:app) do
-      before 'deploy:restart', 'foreman:start'
+      before 'puma:start', 'sidekiq:start'
+      before 'deploy:restart', 'puma:start'
       invoke 'deploy'
     end
   end
