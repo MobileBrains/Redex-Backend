@@ -45,8 +45,8 @@ namespace :puma do
       execute "mkdir #{shared_path}/tmp/pids -p"
     end
   end
-
   before :start, :make_dirs
+
 end
 
 namespace :sidekiq do
@@ -86,6 +86,7 @@ namespace :deploy do
   desc 'Restart application'
   task :restart do
     on roles(:app), in: :sequence, wait: 5 do
+      before 'puma:restart', 'sidekiq:start'
       invoke 'puma:restart'
     end
   end
