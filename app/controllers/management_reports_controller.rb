@@ -3,8 +3,17 @@ class ManagementReportsController < ApplicationController
 
   # GET /management_reports
   # GET /management_reports.json
-  def index
-    @management_reports = ManagementReport.all
+  def index()
+    if current_user.is_a?(User)
+      if current_user.has_role? :Admin
+        @management_reports = ManagementReport.all
+      end
+      if current_user.has_role? :Auditor
+        @management_reports = ManagementReport.where(client_id: current_user.client_id).all
+      else
+
+      end
+    end
   end
 
   # GET /management_reports/1
