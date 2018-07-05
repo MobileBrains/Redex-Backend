@@ -6,43 +6,46 @@
       </div>
     </div>
     <div class="col-md-3">
-      <ul style="list-style: none;">
-        <li>
-          <button id="refreshLocations" style="width: 100%; height: 40px">Actualizar Ubicaciones <i class="fa fa-refresh" aria-hidden="true"></i></button>
-        </li>
-        <hr class="hr_red">
-        <li>
-          <div class="pull-right" style="margin: 10px 10px;">
-            <label class="text_white">Mensajero:</label>
-            <%= collection_select(:user, :name, @courriers, :name, :name, {prompt: true},
-            {:onchange => "oneCourrierOnly()"} )%>
-          </div>
-        </li>
-        <li>
-          <button id="showRequestedLocations" style="width: 100%; height: 40px">Mostrar ubicaciones solicitadas<i class="fa fa-refresh" aria-hidden="true"></i></button>
-        </li>
-        <li>
-          <button id="showAutomaticLocations" style="width: 100%; height: 40px">Mostrar ubicaciones Automaticas<i class="fa fa-refresh" aria-hidden="true"></i></button>
-        </li>
-        <li>
-          <button id="showTodayAndPendentOrders" style="width: 100%; height: 40px">Pendientes entregadas y devolucion<i class="fa fa-refresh" aria-hidden="true"></i></button>
-        </li>
-        <li>
-          <button id="showDeliveredOrdersRoute" style="width: 100%; height: 40px">Ruta de entregas <i class="fa fa-refresh" aria-hidden="true"></i></button>
-        </li>
-      </ul>
+      <div>
+        <button id="refreshLocations" style="width: 100%; height: 40px">Actualizar Ubicaciones <i class="fa fa-refresh" aria-hidden="true"></i></button>
+      </div>
+      <hr class="hr_red">
+      <div class="text-center" style="margin: 10px 10px;">
+        <label class="text_white">Mensajero:</label>
+        <%= collection_select(:user, :name, @courriers, :name, :name, {prompt: true},
+        {:onchange => "oneCourrierOnly()"} )%>
+      </div>
+      <div>
+        <button id="showAllCourrierLocations" style="width: 100%; height: 40px">Mostrar ubicaciones</button>
+      </div>
+      <div>
+        <button id="showRequestedLocations" style="width: 100%; height: 40px">Mostrar ubicaciones Solicitadas</button>
+      </div>
+      <div>
+        <button id="showAutomaticLocations" style="width: 100%; height: 40px">Mostrar ubicaciones Automaticas</button>
+      </div>
+      <div>
+        <button id="showTodayAndPendentOrders" style="width: 100%; height: 40px">Pendientes entregadas y devolucion</button>
+      </div>
+      <div>
+        <button id="showDeliveredOrdersRoute" style="width: 100%; height: 40px">Ruta de entregas </button>
+      </div>
     </div>
   </div>
   <div class="row" style="margin-top: 20px;">
     <div class="col-md-3">
-      <h4 class="text_white"> Ubicaciones Solicitadas</h4>
+      <h4 class="text_white"> Ubicaciones </h4>
       <hr class="hr_red">
-      <p class="text_white">Despues de una llamada o mensaje el mensajero tendra que reportar "manualmente" su ubicacion utilizando el boton del App.</p>
+      <p class="text_white">Muestra las ubicaciones Automaticas y Solicitadas del mensajero seleccionado.</p>
     </div>
     <div class="col-md-3">
-      <h4 class="text_white"> Ubicaciones Automaticas</h4>
+      <h4 class="text_white"> Ubicaciones Solicitadas</h4>
+      <p class="text_white">Hay momentos en los que se desea corroborar la informacion y se solicita a el mensajero que manualmente envie un reporte de unbicacion.</p>
       <hr class="hr_red">
+      <h4 class="text_white"> Ubicaciones Automaticas</h4>
+
       <p class="text_white"> Estas ubicaciones son enviadas automaticamente por el dispositivo cada 5 minutos, este proceso comienza una vez el usuario inicia sesion como mensajero.</p>
+
 
     </div>
     <div class="col-md-3">
@@ -73,6 +76,10 @@ $('#refreshLocations').click(function() {
     location.reload();
 });
 
+$('#showAllCourrierLocations').click(function() {
+    allCourrierLocations()
+});
+
 $('#showRequestedLocations').click(function() {
     requestedCourrierRoute()
 });
@@ -101,6 +108,33 @@ function intializeMap(){
 }
 
 function intializeMapOneCourrierOnly(data){
+  handler = Gmaps.build('Google');
+  handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
+    markers = handler.addMarkers(data);
+    handler.bounds.extendWith(markers);
+    handler.fitMapToBounds();
+  });
+}
+
+function allCourrierLocations(){
+
+  $.ajax({
+          url: '/maps/allCourrierLocations/',
+          type: 'POST',
+          data: {
+            courrier_name: $('#user_name').val()
+          },
+          success: function(data) {
+            var d = data;
+            intializeMapAllCourrierLocations(data)
+          },
+          error: function(data) {
+            console.log(data);
+          }
+        });
+}
+
+function intializeMapAllCourrierLocations(data){
   handler = Gmaps.build('Google');
   handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
     markers = handler.addMarkers(data);
