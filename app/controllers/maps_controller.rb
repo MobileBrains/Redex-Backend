@@ -8,7 +8,7 @@ class MapsController < ApplicationController
       office_id = current_user.mail_delivery_office_id
       @courriers = User.where(mail_delivery_office_id: office_id).where.not(latitude: nil, longitude:nil ).with_role :Courrier
       @delivery_orders = DeliveryOrder.where.not(latitude: nil, longitude:nil ).where("created_at >= ?", Time.zone.now.beginning_of_day).where(mail_delivery_office_id: office_id)
-      #@pendent_orders = DeliveryOrder.where.not(latitude: nil, longitude:nil ).where("created_at >= ?", Time.zone.now.beginning_of_day).where(mail_delivery_office_id: office_id)
+      @pendentOrders = DeliveryOrder.where.not(latitude: nil, longitude:nil ).where(mail_delivery_office_id: office_id).where(state: "pendiente").where.not("created_at >= ?", Time.zone.now.beginning_of_day)
 
       @todayChargesNumbers = DeliveryOrder.where(mail_delivery_office_id: office_id).where("created_at >= ?", Time.zone.now.beginning_of_day).select(:charge_number).distinct
       @todayChargesNumbers.each do |tcharge|
@@ -36,10 +36,11 @@ class MapsController < ApplicationController
               "width" => 35,
               "height" => 42
             })
-          marker.infowindow "Estado: #{order.state}<br>
-                            Cargada al mensajero el: #{order.created_at}
+          marker.infowindow "Estado: <label style='color:red'>#{order.state}</label><br>
+                            Cargada al mensajero el: #{order.created_at}<br>
                             <hr>
-                            Guia Interna: #{order.internal_guide} <br>
+                            Cargue: <label style='color:black'>#{order.charge_number}</label><br>
+                            Guia Interna: <label style='color:black'>#{order.internal_guide}</label><br>
                             Destinatario: #{order.destinatary} <br>
                             Direccion: #{order.address} <br>
                             <hr>
@@ -52,13 +53,13 @@ class MapsController < ApplicationController
               "width" => 35,
               "height" => 42
             })
-          marker.infowindow " Estado: #{order.state}<br>
+          marker.infowindow " Estado: <label style='color:#70cc29'>#{order.state}</label><br>
                               Fecha de entrega: #{order.delivered_at}<br>
                               <hr>
-                              Guia Interna: #{order.internal_guide} <br>
+                              Cargue: <label style='color:black'>#{order.charge_number}</label><br>
+                              Guia Interna: <label style='color:black'>#{order.internal_guide}</label><br>
                               Destinatario: #{order.destinatary} <br>
                               Direccion: #{order.address} <br>
-
                               <hr>
                               Mensajero Encargado: #{order.delivery_man} "
         end
@@ -68,12 +69,13 @@ class MapsController < ApplicationController
               "width" => 35,
               "height" => 42
             })
-          marker.infowindow " Estado: #{order.state}<br>
+          marker.infowindow " Estado: <label style='color:#e3ba0d'>#{order.state}</label><br>
                               Razon: #{order.devolution.devolution_reason}<br>
                               Observacion: #{order.devolution.observation}<br>
                               Fecha de entrega: #{order.delivered_at}<br>
                               <hr>
-                              Guia Interna: #{order.internal_guide} <br>
+                              Cargue: <label style='color:black'>#{order.charge_number}</label><br>
+                              Guia Interna: <label style='color:black'>#{order.internal_guide}</label><br>
                               Destinatario: #{order.destinatary} <br>
                               Direccion: #{order.address} <br>
                               <hr>
@@ -83,6 +85,29 @@ class MapsController < ApplicationController
 
 
       end
+
+      @hash2 = Gmaps4rails.build_markers(@pendentOrders) do |order, marker|
+        marker.lat order.latitude
+        marker.lng order.longitude
+
+        if order.state == "pendiente"
+          marker.picture({
+              "url" => "https://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=P|000|fff|",
+              "width" => 35,
+              "height" => 42
+            })
+          marker.infowindow "Estado: <label style='color:red'>#{order.state}</label><br>
+                            Cargada al mensajero el: #{order.created_at}<br>
+                            <hr>
+                            Cargue: <label style='color:black'>#{order.charge_number}</label><br>
+                            Guia Interna: <label style='color:black'>#{order.internal_guide}</label><br>
+                            Destinatario: #{order.destinatary} <br>
+                            Direccion: #{order.address} <br>
+                            <hr>
+                            Mensajero Encargado: #{order.delivery_man} "
+        end
+      end
+
   end
 
 
@@ -184,12 +209,12 @@ class MapsController < ApplicationController
   def ordersByChargeNumber
     charge_number = params[:chargeNumber]
     office_id = current_user.mail_delivery_office_id
-    @all_orders = DeliveryOrder.where(mail_delivery_office_id: office_id).where(charge_number: charge_number).where.not(latitude: nil, longitude:nil )
-    #@pending_orders = DeliveryOrder.where(charge_number: charge_number, state: "pendiente").where(mail_delivery_office_id: office_id)
+    @orders = DeliveryOrder.where(mail_delivery_office_id: office_id).where(charge_number: charge_number).where.not(latitude: nil, longitude:nil ).where("created_at >= ?", Time.zone.now.beginning_of_day)
+    @not_today_pending_orders = DeliveryOrder.where.not("created_at >= ?", Time.zone.now.beginning_of_day).where.not(latitude: nil, longitude:nil ).where(charge_number: charge_number, state: "pendiente").where(mail_delivery_office_id: office_id)
     #@delivered_orders = DeliveryOrder.where(charge_number: charge_number, state: "entregada").where(mail_delivery_office_id: office_id)
     #@devolutions = DeliveryOrder.where(charge_number: charge_number, state: "devolucion").where(mail_delivery_office_id: office_id)
 
-    @hash = Gmaps4rails.build_markers(@all_orders) do |order, marker|
+    @hash = Gmaps4rails.build_markers(@orders) do |order, marker|
       marker.lat order.latitude
       marker.lng order.longitude
       if order.state == "pendiente"
@@ -199,10 +224,11 @@ class MapsController < ApplicationController
                 "height" => 42
               })
 
-          marker.infowindow " Estado: #{order.state}<br>
+          marker.infowindow "Estado: <label style='color:red'>#{order.state}</label><br>
                               Cargada al mensajero el: #{order.created_at}
                               <hr>
-                              Guia Interna: #{order.internal_guide} <br>
+                              Cargue: <label style='color:black'>#{order.charge_number}</label><br>
+                              Guia Interna: <label style='color:black'>#{order.internal_guide}</label><br>
                               Destinatario: #{order.destinatary} <br>
                               Direccion: #{order.address} <br>
                               <hr>
@@ -215,10 +241,11 @@ class MapsController < ApplicationController
                 "height" => 42
               })
 
-          marker.infowindow " Estado: #{order.state}<br>
+          marker.infowindow " Estado: <label style='color:#70cc29'>#{order.state}</label><br>
                               Cargada al mensajero el: #{order.created_at}
                               <hr>
-                              Guia Interna: #{order.internal_guide} <br>
+                              Cargue: <label style='color:black'>#{order.charge_number}</label><br>
+                              Guia Interna: <label style='color:black'>#{order.internal_guide}</label><br>
                               Destinatario: #{order.destinatary} <br>
                               Direccion: #{order.address} <br>
                               <hr>
@@ -231,10 +258,11 @@ class MapsController < ApplicationController
                 "height" => 42
               })
 
-          marker.infowindow " Estado: #{order.state}<br>
+          marker.infowindow " Estado: <label style='color:#e3ba0d'>#{order.state}</label><br>
                               Cargada al mensajero el: #{order.created_at}
                               <hr>
-                              Guia Interna: #{order.internal_guide} <br>
+                              Cargue: <label style='color:black'>#{order.charge_number}</label><br>
+                              Guia Interna: <label style='color:black'>#{order.internal_guide}</label><br>
                               Destinatario: #{order.destinatary} <br>
                               Direccion: #{order.address} <br>
                               <hr>
@@ -242,8 +270,30 @@ class MapsController < ApplicationController
       end
     end
 
+    @hash2 = Gmaps4rails.build_markers(@not_today_pending_orders) do |order, marker|
+      marker.lat order.latitude
+      marker.lng order.longitude
+
+      if order.state == "pendiente"
+        marker.picture({
+            "url" => "https://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=P|000|fff|",
+            "width" => 35,
+            "height" => 42
+          })
+        marker.infowindow "Estado: <label style='color:red'>#{order.state}</label><br>
+                          Cargada al mensajero el: #{order.created_at}<br>
+                          <hr>
+                          Cargue: <label style='color:black'>#{order.charge_number}</label><br>
+                          Guia Interna: <label style='color:black'>#{order.internal_guide}</label><br>
+                          Destinatario: #{order.destinatary} <br>
+                          Direccion: #{order.address} <br>
+                          <hr>
+                          Mensajero Encargado: #{order.delivery_man} "
+      end
+    end
+
     respond_to do |response|
-     response.json { render json: @hash }
+     response.json { render json: @hash2 + @hash }
     end
   end
 
@@ -319,10 +369,11 @@ class MapsController < ApplicationController
                 "height" => 42
               })
 
-          marker.infowindow " Estado: #{order.state}<br>
+          marker.infowindow " Estado: <label style='color:red'>#{order.state}</label><br>
                               Cargada al mensajero el: #{order.created_at}
                               <hr>
-                              Guia Interna: #{order.internal_guide} <br>
+                              Cargue: <label style='color:black'>#{order.charge_number}</label><br>
+                              Guia Interna: <label style='color:black'>#{order.internal_guide}</label><br>
                               Destinatario: #{order.destinatary} <br>
                               Direccion: #{order.address} <br>
                               <hr>
@@ -341,7 +392,8 @@ class MapsController < ApplicationController
 
           marker.infowindow " Estado: #{order.state}
                               <hr>
-                              Guia Interna: #{order.internal_guide} <br>
+                              Cargue: <label style='color:black'>#{order.charge_number}</label><br>
+                              Guia Interna: <label style='color:black'>#{order.internal_guide}</label><br>
                               Destinatario: #{order.destinatary} <br>
                               Direccion: #{order.address} <br>
                               <hr>
@@ -361,10 +413,11 @@ class MapsController < ApplicationController
 
 
 
-          marker.infowindow " Estado: #{order.state}<br>
+          marker.infowindow " Estado: <label style='color:#70cc29'>#{order.state}</label><br>
                               Fecha de entrega: #{order.delivered_at}<br>
                               <hr>
-                              Guia Interna: #{order.internal_guide} <br>
+                              Cargue: <label style='color:black'>#{order.charge_number}</label><br>
+                              Guia Interna: <label style='color:black'>#{order.internal_guide}</label><br>
                               Destinatario: #{order.destinatary} <br>
                               Direccion: #{order.address} <br>
                               <hr>
@@ -382,20 +435,23 @@ class MapsController < ApplicationController
                 "height" => 42
               })
 
-          marker.infowindow " Estado: #{order.state}<br>
+          marker.infowindow " Estado: <label style='color:#e3ba0d'>#{order.state}</label><br>
                               Razon: #{order.devolution.devolution_reason}<br>
                               Observacion: #{order.devolution.observation}<br>
                               Fecha de entrega: #{order.delivered_at}<br>
                               <hr>
-                              Guia Interna: #{order.internal_guide} <br>
+                              Cargue: <label style='color:black'>#{order.charge_number}</label><br>
+                              Guia Interna: <label style='color:black'>#{order.internal_guide}</label><br>
                               Destinatario: #{order.destinatary} <br>
                               Direccion: #{order.address} <br>
                               <hr>
                               Mensajero Encargado: #{order.delivery_man} "
         end
 
+
+
       respond_to do |response|
-        response.json { render json: @hash + @hash2 + @hash3 + @hash4}
+        response.json { render json: @hash + @hash2 + @hash3 + @hash4 }
       end
 
   end
@@ -419,11 +475,12 @@ class MapsController < ApplicationController
               "height" => 42
             })
 
-          marker.infowindow " Estado: #{order.state} <br>
+          marker.infowindow " Estado: <label style='color:#e3ba0d'>#{order.state}</label><br>
                               Razon: #{order.devolution.devolution_reason}<br>
                               Fecha de entrega: #{order.delivered_at}<br>
                               <hr>
-                              Guia Interna: #{order.internal_guide} <br>
+                              Cargue: <label style='color:black'>#{order.charge_number}</label><br>
+                              Guia Interna: <label style='color:black'>#{order.internal_guide}</label><br>
                               Destinatario: #{order.destinatary} <br>
                               Direccion: #{order.address} <br>
 
@@ -435,10 +492,11 @@ class MapsController < ApplicationController
                 "width" => 35,
                 "height" => 42
               })
-          marker.infowindow " Estado: #{order.state} <br>
+          marker.infowindow " Estado: <label style='color:#70cc29'>#{order.state}</label><br>
                               Fecha de entrega: #{order.delivered_at}<br>
                               <hr>
-                              Guia Interna: #{order.internal_guide} <br>
+                              Cargue: <label style='color:black'>#{order.charge_number}</label><br>
+                              Guia Interna: <label style='color:black'>#{order.internal_guide}</label><br>
                               Destinatario: #{order.destinatary} <br>
                               Direccion: #{order.address} <br>
                               <hr>
