@@ -78,7 +78,10 @@ Rails.application.routes.draw do
   get 'maps/deliveryOrders'
   get 'maps/courriersLocation'
 
+  post 'maps/chargesByCourrier'
   post 'maps/oneCourrierOnly'
+  post 'maps/allCourrierLocations'
+  post 'maps/ordersByChargeNumber'
   post 'maps/requestedCourrierRoute'
   post 'maps/automaticCourrierRoute'
   post 'maps/todayAndPendentOrders'
