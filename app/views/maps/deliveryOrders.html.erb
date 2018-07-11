@@ -15,7 +15,7 @@
       <div class="text-center">
         <h4 style="color: white ">Consultar por numero de cargue</h4>
         <div class="field">
-          <input type="number" name="chargeNumber" id="chargeNumber">
+          <input name="chargeNumber" id="chargeNumber">
         </div>
         <button id="ordersByChargeNumber" style="width: 100%; height: 40px">Consultar cargue
         </button>
@@ -38,7 +38,7 @@
           </thead>
           <% @notTodayChargesNumbersAndDate.each do |charge| %>
           <tr>
-            <td><%= charge.charge_number %> </td>
+            <td><%= charge.charge_number %></td>
             <td><%= charge.created_at %></td>
             <td><%= charge.delivery_man %></td>
           </tr>
