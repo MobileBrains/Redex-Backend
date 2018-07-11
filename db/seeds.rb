@@ -103,8 +103,8 @@ MailDeliveryOffice.create({
  U.save
 
  CourriersLocation.create({
-    latitude: '5.4324',
-    longitude: '-54.32423',
+    latitude: '5.06764833333333',
+    longitude: '-75.5162466666667',
     location_type: 'Requested',
     user_id: 4
 

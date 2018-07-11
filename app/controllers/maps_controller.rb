@@ -18,13 +18,25 @@ class MapsController < ApplicationController
         end
       end
 
-      @notTodayChargesNumbers = DeliveryOrder.where(mail_delivery_office_id: office_id).where.not("created_at >= ?", Time.zone.now.beginning_of_day).select(:charge_number).distinct
+      #@notTodayChargesNumbers = DeliveryOrder.where(mail_delivery_office_id: office_id).where.not("created_at >= ?", Time.zone.now.beginning_of_day).select(:charge_number).distinct
+      #@notTodayChargesNumbers.each do |charge|
+      #  @items = DeliveryOrder.where.not("created_at >= ?", Time.zone.now.beginning_of_day).where(mail_delivery_office_id: office_id).where(charge_number: charge.charge_number).select(:created_at, :charge_number, :delivery_man).distinct
+      #  @items.each do |item|
+      #    @notTodayChargesNumbersAndDate << item
+      #  end
+      #end
+
+      @notTodayChargesNumbers = DeliveryOrder.where(mail_delivery_office_id: office_id).where.not("created_at >= ?", Time.zone.now.beginning_of_day).select(:charge_number, :delivery_man).distinct
+      puts @notTodayChargesNumbers.to_json
       @notTodayChargesNumbers.each do |charge|
-        @items = DeliveryOrder.where.not("created_at >= ?", Time.zone.now.beginning_of_day).where(mail_delivery_office_id: office_id).where(charge_number: charge.charge_number).select(:created_at, :charge_number, :delivery_man).distinct
-        @items.each do |item|
-          @notTodayChargesNumbersAndDate << item
-        end
+        @items = DeliveryOrder.where.not("created_at >= ?", Time.zone.now.beginning_of_day).where(mail_delivery_office_id: office_id).where(charge_number: charge.charge_number, delivery_man: charge.delivery_man).last
+        puts "last #{@items.to_json}"
+        #@items.each do |item|
+          @notTodayChargesNumbersAndDate << @items
+        #end
       end
+
+
 
       @hash = Gmaps4rails.build_markers(@delivery_orders) do |order, marker|
         marker.lat order.latitude
