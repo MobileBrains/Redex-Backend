@@ -18,7 +18,9 @@ class CourriersLocation < ApplicationRecord
   belongs_to :user
 
   reverse_geocoded_by :latitude, :longitude, :address => :location
-  after_validation :reverse_geocode, if: -> {self.longitude.present? and self.latitude.present? and self.longitude_changed? or self.latitude_changed?  }   # auto-fetch address
+  after_validation :reverse_geocode, if: -> {self.longitude.present? and self.latitude.present?}   # auto-fetch address
+
+  #after_validation :reverse_geocode, if: -> {self.longitude.present? and self.latitude.present? and self.longitude_changed? or self.latitude_changed?  }   # auto-fetch address
 
   enum location_type: { Requested: 0,
                         Automatic: 1
